@@ -28,6 +28,13 @@
             ></app-tree-structure>
           </div>
         </mat-tab>
+        <mat-tab class="toolbar__tab" label="Тесты">
+          <div class="toolbar__content">
+            <app-tests
+              [repoID]="repositoryId"
+            ></app-tests>
+          </div>
+        </mat-tab>
       </mat-tab-group>
       <div class="toolbar__wrapper-step-buttons">
         <app-step-buttons

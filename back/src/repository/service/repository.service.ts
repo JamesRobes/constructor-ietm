@@ -25,6 +25,7 @@ import { AddToFavoriteDto } from '../models/dto/addToFavorite.dto';
 import { RemoveFromFavoriteDto } from '../models/dto/removeFromFavorite.dto';
 import { CheckRepoInFavoriteDto } from '../models/dto/checkRepoInFavorite.dto';
 import { FindRepositoryDto } from '../models/dto/findRepository.dto';
+import { Test, TestDocument } from '../models/schemas/test.schema';
 
 const TEAM_POPULATE_DATA = {
   path: 'team',
@@ -415,6 +416,7 @@ export class RepositoryService {
                       filename: file.originalname,
                       path: fileId,
                       type: type,
+                      tests: [],
                     });
                     return from(
                       this.updateOne({ _id: repo._id, models: repo.models }),
@@ -445,6 +447,7 @@ export class RepositoryService {
                 filename: file.originalname,
                 path: fileId,
                 type: type,
+                tests: [],
               });
               return from(
                 this.updateOne({ _id: repo._id, models: repo.models }),
@@ -586,4 +589,21 @@ export class RepositoryService {
         .populate('participants.user', USER_POPULATE_FIELDS_LIST),
     );
   }
+
+  getAllTestsByRepoID(repoId: string): Observable<any> {
+    return this.getOneById(repoId)
+    .pipe(map(repo => {
+      return repo.models[0].tests;
+    }));      
+  }
+
+  // createTest(data: {testBody: Test, repo: RepositoryDocument}): Observable<any> {
+  //   return from(
+  //     this.repositoryModel.updateOne({ _id: data.repo._id }, {data.repo.models[0].tests.push(data.testBody)}),
+  //   ).pipe(
+  //     map((result: any) => {
+  //       return result.modifiedCount ? true : false;
+  //     }),
+  //   );
+  // }
 }

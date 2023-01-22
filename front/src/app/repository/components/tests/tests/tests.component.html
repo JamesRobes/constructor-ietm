@@ -1,0 +1,11 @@
+<div class="allTests" *ngIf="tests.length">
+    <div *ngFor="let test of tests">
+        <a>
+            {{test.name}}
+        </a>
+
+        <div mat-raised-button color="primary" type="button">
+            <button>Пройти тест</button>
+        </div>
+    </div>
+</div>

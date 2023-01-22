@@ -14,9 +14,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogConfirmActionModule } from '../dialogs/dialog-confirm-action/dialog-confirm-action.module';
 import { InstructionsComponent } from './components/instructions/instructions.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TestsComponent } from './components/tests/tests/tests.component';
 
 @NgModule({
-  declarations: [RepositoryComponent, SummaryComponent, TreeComponent, InstructionsComponent],
+  declarations: [RepositoryComponent, SummaryComponent, TreeComponent, InstructionsComponent, TestsComponent],
   imports: [
     CommonModule,
     RepositoryRoutingModule,

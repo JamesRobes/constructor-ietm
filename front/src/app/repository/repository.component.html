@@ -142,6 +142,13 @@
       *ngIf="repository.modelTree"
       >Дерево</a
     >
+    <a
+      class="repository__tab"
+      [routerLink]="'/repository/' + repository._id + '/test'"
+      routerLinkActive="repository__tab_active"
+      *ngIf="repository.modelTree"
+      >Тесты</a
+    >
   </div>
   <div class="repository__content">
     <div class="loader" *ngIf="repository.models.length && !viewerInitialized">
