@@ -10,6 +10,8 @@ import { ModelManagerModule } from './model-manager/model-manager.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TeamModule } from './team/team.module';
 import { RepositoryModule } from './repository/repository.module';
+import { ImagesUploadModule } from './images-upload/images-upload.module';
+import { ArticlesModule } from './articles/articles.module';
 
 const modules = [
   ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env', './.env'] }),
@@ -19,6 +21,8 @@ const modules = [
   ModelManagerModule,
   TeamModule,
   RepositoryModule,
+  ImagesUploadModule,
+  ArticlesModule,
 ];
 
 if (process.env.NODE_ENV !== 'development') {
