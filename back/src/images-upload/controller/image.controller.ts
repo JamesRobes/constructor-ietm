@@ -46,7 +46,7 @@ export class ImageController {
     return {
       success: 1,
       file: {
-        url: 'http://localhost:8080/api/image/' + file.filename,
+        url: 'api/image/' + file.filename,
       },
     };
   }
