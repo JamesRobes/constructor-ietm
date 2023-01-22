@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InstructionsComponent } from './components/instructions/instructions.component';
 import { SummaryComponent } from './components/summary/summary.component';
+import { TestsComponent } from './components/tests/tests/tests.component';
 import { TreeComponent } from './components/tree/tree.component';
 import { RepositoryComponent } from './repository.component';
 import { RepositoryIsInFavoriteResolverService } from './resolvers/repository-is-in-favorite-resolver.service';
@@ -29,6 +30,10 @@ const routes: Routes = [
         path: 'instructions',
         component: InstructionsComponent,
       },
+      {
+        path: 'test',
+        component: TestsComponent,
+      }
     ],
   },
   {

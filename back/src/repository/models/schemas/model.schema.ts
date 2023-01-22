@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Test, TestSchema } from './test.schema';
 
 export type ModelDocument = Model & Document;
 
@@ -16,6 +17,9 @@ export class Model {
 
   @Prop()
   path: string;
+
+  @Prop({type: [TestSchema], default: []})
+  tests: Test[];
 }
 
 export const ModelSchema = SchemaFactory.createForClass(Model);

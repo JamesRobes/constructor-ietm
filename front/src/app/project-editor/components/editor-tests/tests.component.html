@@ -1,0 +1,51 @@
+<div class="editor-tests">
+    <button mat-raised-button color="primary" type="button" (click)="addTest()" *ngIf="!editMode">
+        Добавить тест
+    </button>
+
+    <div *ngIf="tests.length && !editMode">
+        <span *ngFor="let test of tests">
+            {{test.name}}
+        </span>
+    </div>
+
+    <div *ngIf="editMode">
+        <div id="test" class="questionDiv">
+            <input [(ngModel)]="testName" placeholder="Название теста">
+            <!-- <div id="question" class="questionDiv">
+                <div>Вопрос №1</div>
+                <div>Выберите тип вопроса</div>
+                <div>
+                    <div>
+                        <input type="radio" id="questionType_0" name="questionType">
+                        <label for="questionType_0">Выберите деталь</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="questionType_1" name="questionType">
+                        <label for="questionType_1">Какая деталь на экране?</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="questionType_2" name="questionType">
+                        <label for="questionType_2">Впишите название детали на экране</label>
+                    </div>
+                </div>
+                <div>
+                    <div> Введите текст вопроса</div>
+                    <input placeholder="Текст вопроса">
+                </div>
+            </div> -->
+        </div>
+
+    </div>
+
+    <button class="buts" mat-raised-button color="primary" type="button" (click)="addQuestion()" *ngIf="editMode">
+        Добавить вопрос
+    </button>
+
+    <button class="buts" mat-raised-button color="primary" type="button" (click)="finishTest()" *ngIf="editMode">
+        Завершить создание теста
+    </button>
+    <button class="buts" mat-raised-button color="primary" type="button" (click)="cancel()" *ngIf="editMode">
+        Отмена
+    </button>
+</div>

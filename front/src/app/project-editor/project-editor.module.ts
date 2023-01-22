@@ -26,6 +26,8 @@ import { TreeStructureModule } from '../tree-structure/tree-structure.module';
 import { EditorInstructionsComponent } from './components/editor-instructions/editor-instructions.component';
 import { InstructionComponent } from './components/instruction/instruction.component';
 import { StepActionComponent } from './components/step-action/step-action.component';
+import { TestsComponent } from './components/editor-tests/tests.component';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { StepActionComponent } from './components/step-action/step-action.compon
     EditorInstructionsComponent,
     InstructionComponent,
     StepActionComponent,
+    TestsComponent,
   ],
   imports: [
     CommonModule,

@@ -32,6 +32,7 @@ import { RemoveFromFavoriteDto } from '../models/dto/removeFromFavorite.dto';
 import { RemoveModelDto } from '../models/dto/removeModel.dto';
 import { TakeModelDto } from '../models/dto/takeModel.dto';
 import { RepositoryDocument } from '../models/schemas/repository.schema';
+import { TestDocument } from '../models/schemas/test.schema';
 import { RepositoryService } from '../service/repository.service';
 
 @Controller('repository')
@@ -209,5 +210,12 @@ export class RepositoryController {
   @Get('favorite/all')
   getAllFavoriteTickets() {
     return this.repositoryService.getAllFavoriteTickets();
+  }
+
+  @Get('tests/all/:id')
+  getAllTestsByRepoID(
+    @Param('id') id: string,
+  ): Observable<TestDocument[]> {
+    return this.repositoryService.getAllTestsByRepoID(id);
   }
 }

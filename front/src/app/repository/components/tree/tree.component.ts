@@ -13,6 +13,7 @@ export class TreeComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
+    
     this.tree = this.route.snapshot.parent?.data.repository.modelTree;
 
     if (!this.tree) this.router.navigate(['..'], { relativeTo: this.route });
