@@ -13,6 +13,7 @@ import { RepositoryModule } from './repository/repository.module';
 import { ImagesUploadModule } from './images-upload/images-upload.module';
 import { ArticlesModule } from './articles/articles.module';
 import { CategoriesModule } from './categories/categories.module';
+import { KnowledgeUsersModule } from './knowledge-users/knowledge-users.module';
 
 const modules = [
   ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env', './.env'] }),
@@ -25,6 +26,7 @@ const modules = [
   ImagesUploadModule,
   ArticlesModule,
   CategoriesModule,
+  KnowledgeUsersModule,
 ];
 
 if (process.env.NODE_ENV !== 'development') {
