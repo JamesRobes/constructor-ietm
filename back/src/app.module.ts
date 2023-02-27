@@ -14,6 +14,7 @@ import { ImagesUploadModule } from './images-upload/images-upload.module';
 import { ArticlesModule } from './articles/articles.module';
 import { CategoriesModule } from './categories/categories.module';
 import { KnowledgeUsersModule } from './knowledge-users/knowledge-users.module';
+import { EditCommentsModule } from './edit-comments/edit-comments.module';
 
 const modules = [
   ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env', './.env'] }),
@@ -27,6 +28,7 @@ const modules = [
   ArticlesModule,
   CategoriesModule,
   KnowledgeUsersModule,
+  EditCommentsModule,
 ];
 
 if (process.env.NODE_ENV !== 'development') {
