@@ -25,8 +25,10 @@ export class ArticlesController {
   findAll(
     @Query('moderation') moderation: boolean,
     @Query('userId') userId: string,
+    @Query('categoryId') categoryId: string,
   ) {
-    return this.articlesService.findAll(moderation, userId);
+    const query = { moderation, userId, categoryId };
+    return this.articlesService.findAll(query);
   }
 
   @Get(':id')
