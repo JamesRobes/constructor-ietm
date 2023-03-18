@@ -13,7 +13,7 @@ export class KnowledgeUsersService {
   constructor(
     @InjectModel(KnowledgeUser.name)
     private knowledgeUserModel: Model<KnowledgeUserDocument>,
-  ) {}
+  ) { }
 
   async create(createKnowledgeUserDto: CreateKnowledgeUserDto) {
     const { userId, mainAdmin, categoriesAdmin } = createKnowledgeUserDto;
@@ -33,9 +33,9 @@ export class KnowledgeUsersService {
       .exec();
   }
 
-  findOne(id: string) {
+  findOne(userId: string) {
     return this.knowledgeUserModel
-      .findById(id)
+      .findOne({ user: userId })
       .populate('categoriesAdmin user')
       .select('-__v -categoriesAdmin.__v')
       .exec();
