@@ -26,6 +26,7 @@ import { RemoveFromFavoriteDto } from '../models/dto/removeFromFavorite.dto';
 import { CheckRepoInFavoriteDto } from '../models/dto/checkRepoInFavorite.dto';
 import { FindRepositoryDto } from '../models/dto/findRepository.dto';
 import { Test, TestDocument } from '../models/schemas/test.schema';
+import { CreateTestDto } from '../models/dto/createTest.dto';
 
 const TEAM_POPULATE_DATA = {
   path: 'team',
@@ -416,7 +417,6 @@ export class RepositoryService {
                       filename: file.originalname,
                       path: fileId,
                       type: type,
-                      tests: [],
                     });
                     return from(
                       this.updateOne({ _id: repo._id, models: repo.models }),
@@ -447,7 +447,6 @@ export class RepositoryService {
                 filename: file.originalname,
                 path: fileId,
                 type: type,
-                tests: [],
               });
               return from(
                 this.updateOne({ _id: repo._id, models: repo.models }),
@@ -593,17 +592,29 @@ export class RepositoryService {
   getAllTestsByRepoID(repoId: string): Observable<any> {
     return this.getOneById(repoId)
     .pipe(map(repo => {
-      return repo.models[0].tests;
+      return repo.tests;
     }));      
   }
 
-  // createTest(data: {testBody: Test, repo: RepositoryDocument}): Observable<any> {
-  //   return from(
-  //     this.repositoryModel.updateOne({ _id: data.repo._id }, {data.repo.models[0].tests.push(data.testBody)}),
-  //   ).pipe(
-  //     map((result: any) => {
-  //       return result.modifiedCount ? true : false;
-  //     }),
-  //   );
-  // }
+  createTest(createTestDto: CreateTestDto): Observable<any> {
+    return this.getOneById(createTestDto.repoId)
+    .pipe(
+      switchMap(repo => {
+        const testBody = {
+          name: createTestDto.name,
+          questions: createTestDto.questions,
+        }
+        repo.tests.push(testBody)
+        const testData = {
+          tests: [...repo.tests]
+        }
+        return from(
+          this.repositoryModel.updateOne({ _id: repo._id }, repo),
+        ).pipe(
+          map((result: any) => {
+            return result;
+          }),
+        );
+      }))    
+  }
 }

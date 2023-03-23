@@ -102,6 +102,7 @@ export class ProjectEditorComponent implements OnInit, OnDestroy {
             grid: data.settings.grid,
             background: data.settings.background,
             cameraPosition: data.settings.cameraPosition,
+            partColor: data.settings.partColor || "#ffffff",
           },
           instructions: data.instructions,
         })

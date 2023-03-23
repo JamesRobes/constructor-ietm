@@ -1,8 +1,21 @@
 <div class="allTests" *ngIf="tests.length">
     <div *ngFor="let test of tests">
-        <a>
+        <div class="test">
             {{test.name}}
-        </a>
+            <div>
+                {{test.questions[0].header}}
+                {{test.questions[0].answer}}
+
+                <!-- {{test.questions[1].header}}
+                {{test.questions[1].answer}}
+
+                {{test.questions[2].header}}
+                {{test.questions[2].answer}}
+
+                {{test.questions[3].header}}
+                {{test.questions[3].answer}} -->
+            </div>
+        </div>
 
         <div mat-raised-button color="primary" type="button">
             <button>Пройти тест</button>

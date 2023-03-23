@@ -11,6 +11,7 @@ import {
 import { Instruction, InstructionSchema } from './instruction.schema';
 import { Model, ModelSchema } from './model.schema';
 import { SceneSettings, SceneSettingsSchema } from './scene-settings.schema';
+import { Test, TestSchema } from './test.schema';
 
 export type RepositoryDocument = Repository & Document;
 
@@ -39,6 +40,9 @@ export class Repository {
 
   @Prop({ type: [ModelSchema], default: [] })
   models: Model[];
+
+  @Prop({type: [TestSchema], default: []})
+  tests: Test[];
 
   @Prop({ type: [InstructionSchema], default: [] })
   instructions: Instruction[];

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RepositoryResolverService } from '../repository/resolvers/repository-resolver.service';
 import { ParticipantRole } from '../shared/models/participant.interface';
 import { UserTeamsResolverService } from '../team/resolvers/user-teams.service';
+import { TestsComponent } from './components/editor-tests/tests.component';
 import { ProjectEditorComponent } from './project-editor.component';
 
 const routes: Routes = [

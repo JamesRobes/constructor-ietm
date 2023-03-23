@@ -117,6 +117,13 @@ export class SceneService {
     this.annotations$.next([...annotations]);
   }
 
+  clearAnnotations() {
+    const annotations = this.annotations$.getValue();
+    annotations.forEach(annotation => {
+      this.deleteAnnotation(annotation);
+    });
+  }
+
   getIsRecording() {
     return this.isRecording$.asObservable();
   }
@@ -204,6 +211,28 @@ export class SceneService {
 
   setBackgroundColorScene(color: string) {
     this.viewer.scene.background = new THREE.Color(color);
+  }
+
+  setModelColor(color: string) {
+    let partID = this.selectedObj.uuid;
+
+    color = color.replace(/^#/, '');
+    if (color.length === 3) color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
+
+    const match = color.match(/.{2}/g);
+    let [r, g, b]: any[] = [];
+    if (match) [r, g, b] = match;
+    [r, g, b] = [parseInt(r, 16) , parseInt(g, 16) , parseInt(b, 16) ];
+
+    r = (r/255);
+    g = (g/255);
+    b = (b/255);   
+
+    console.log(this.selectedObj.defaultMaterial);
+    this.selectedObj.defaultMaterial.color.r = r;
+    this.selectedObj.defaultMaterial.color.g = g;
+    this.selectedObj.defaultMaterial.color.b = b;
+    //obj!.material.color = {r:0.5, g: 0.4, b: 0.3};
   }
 
   animateScene() {
@@ -807,6 +836,8 @@ export class SceneService {
       (marker) => marker.userData.id !== deletedAnnotation.id,
     );
   }
+
+
 
   createSectionPlane(data: { indexPlane: number; constantSection: number; inverted: boolean }) {
     this.sectionService.createSection(

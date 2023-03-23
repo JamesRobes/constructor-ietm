@@ -12,6 +12,9 @@ export class Question {
     answer: string;
 
     @Prop()
+    modelID: string;
+
+    @Prop()
     score: number;
 
     @Prop()
@@ -19,6 +22,7 @@ export class Question {
 
     @Prop()
     body: string;
+
 }
 
 export const QuestionSchema = SchemaFactory.createForClass(Question);

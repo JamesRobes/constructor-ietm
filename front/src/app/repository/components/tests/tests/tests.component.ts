@@ -11,6 +11,7 @@ export class TestsComponent implements OnInit {
   @Input()
   public repoID: string;
   public tests: any[] = [];
+  public questions: any[] = [];
   constructor(private testService: TestsServiceService, private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
@@ -20,5 +21,4 @@ export class TestsComponent implements OnInit {
       .subscribe(tests => {this.tests = tests; console.log(tests)});
     }
   }
-
 }

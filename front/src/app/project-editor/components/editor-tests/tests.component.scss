@@ -3,10 +3,33 @@
 }
 
 .questionDiv{
-    padding: 16px;
+    //padding: 16px;
     font-size: 20px;
 }
 
 .buts{
     margin: 10px;
+}
+
+.existedTests{
+    padding: 10px;
+    font-size: 20px;
+}
+
+.test-name{
+    padding: 10px;
+    font-size: 20px;
+}
+
+.type{
+    font-size: 20px;
+}
+
+::placeholder{
+    font-size: 20px;
+    width: auto;
+}
+
+.text{
+    width: 100%;
 }

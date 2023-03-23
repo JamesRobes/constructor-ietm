@@ -1,5 +1,5 @@
-<div class="toolbar">
-  <div class="toolbar__container">
+<div class="toolbar" id="123" >
+  <div class="toolbar__container">    
     <div
       class="toolbar__btn"
       matTooltip="Сброс камеры"
@@ -157,6 +157,17 @@
         [iconPath]="'assets/svg/viewMode.svg'"
         [buttonName]="viewMode ? 'Скрытие аннотаций' : 'Отображение аннотации'"
         (btnClicked)="hideAnnotation()"
+      ></app-viewer-button>
+    </div>
+    <div 
+      class="toolbar__btn"
+      matTooltip="Полный экран"
+      matTooltipPosition="above"
+      matTooltipClass="tooltip">
+      <app-viewer-button 
+        [iconPath]="isFullscreen() ? 'assets/svg/exit_fullscreen.svg' : 'assets/svg/full-screen_icon.svg'" 
+        [buttonName]="'Полный экран'"
+        (btnClicked)="fullScreen()"
       ></app-viewer-button>
     </div>
   </div>

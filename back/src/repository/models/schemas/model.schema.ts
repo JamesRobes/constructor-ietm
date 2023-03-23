@@ -17,9 +17,6 @@ export class Model {
 
   @Prop()
   path: string;
-
-  @Prop({type: [TestSchema], default: []})
-  tests: Test[];
 }
 
 export const ModelSchema = SchemaFactory.createForClass(Model);

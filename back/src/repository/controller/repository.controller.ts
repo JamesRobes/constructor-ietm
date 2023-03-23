@@ -26,6 +26,7 @@ import { UserDocument } from 'src/user/models/schemas/user.schema';
 import { AddToFavoriteDto } from '../models/dto/addToFavorite.dto';
 import { CheckRepoInFavoriteDto } from '../models/dto/checkRepoInFavorite.dto';
 import { CreateRepositoryDto } from '../models/dto/createRepository.dto';
+import { CreateTestDto } from '../models/dto/createTest.dto';
 import { FindRepositoryDto } from '../models/dto/findRepository.dto';
 import { RegisterModelDto } from '../models/dto/registerModel.dto';
 import { RemoveFromFavoriteDto } from '../models/dto/removeFromFavorite.dto';
@@ -217,5 +218,13 @@ export class RepositoryController {
     @Param('id') id: string,
   ): Observable<TestDocument[]> {
     return this.repositoryService.getAllTestsByRepoID(id);
+  }
+
+  @Post('tests/create')
+  createTest(
+    @Body() createTestDto: CreateTestDto
+  ): Observable<any>
+  {
+    return this.repositoryService.createTest(createTestDto);
   }
 }

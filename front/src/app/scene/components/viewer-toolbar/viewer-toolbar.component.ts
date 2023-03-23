@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -59,6 +60,25 @@ export class ViewerToolbarComponent implements OnInit {
 
   resetCamera() {
     this.viewerBtnClicked.emit(VIEWER_BUTTONS.Home);
+  }
+  
+  fullScreen() {    
+    var elem = document.querySelector(".viewer")!;
+    if(this.isFullscreen())
+    {
+      document.exitFullscreen();
+      return
+    }
+
+    console.log(elem);
+    if (elem?.requestFullscreen){
+        elem.requestFullscreen();
+    }    
+    
+  }
+
+  isFullscreen() {
+    return !!document.fullscreenElement;
   }
 
   rotateCamera() {

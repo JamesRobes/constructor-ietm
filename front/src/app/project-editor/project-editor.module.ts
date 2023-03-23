@@ -29,6 +29,7 @@ import { StepActionComponent } from './components/step-action/step-action.compon
 import { TestsComponent } from './components/editor-tests/tests.component';
 
 
+
 @NgModule({
   declarations: [
     ProjectEditorComponent,
@@ -44,6 +45,7 @@ import { TestsComponent } from './components/editor-tests/tests.component';
     InstructionComponent,
     StepActionComponent,
     TestsComponent,
+
   ],
   imports: [
     CommonModule,

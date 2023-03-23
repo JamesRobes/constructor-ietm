@@ -14,7 +14,7 @@ export class Test{
     questions: Question[];
 
     @Prop({type: [ResultSchema], default: []})
-    results: Result[];
+    results?: Result[];
 }
 
 export const TestSchema = SchemaFactory.createForClass(Test);

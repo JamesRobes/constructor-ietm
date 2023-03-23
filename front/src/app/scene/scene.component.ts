@@ -115,6 +115,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
   contextMenuFirstOpen = true;
 
   coordsAnnotation: any;
+  lastClickCoords: any;
   attachedObject: any;
 
   viewer: Viewer;
@@ -207,6 +208,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.initialSettings) {
       this.settings.grid = this.initialSettings.grid;
       this.settings.background = this.initialSettings.background;
+      this.settings.partColor = this.initialSettings.partColor;
       this.settings.cameraPosition = this.initialSettings.cameraPosition;
     }
 
@@ -332,6 +334,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setMouseCoords(e: MouseEvent) {
     this.mouseCoords = { ...this.getMouseCoorsByMouseEvent(e) };
+    this.setHoveredObj();
   }
 
   setSelectedObj() {
@@ -343,6 +346,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     if (filteredIntersects)
       if (filteredIntersects.length > 0) {
         this.coordsAnnotation = filteredIntersects[0].point;
+        this.lastClickCoords = filteredIntersects[0].point;
         this.attachedObject = filteredIntersects[0].object;
         this.viewer.outlinePass.selectedObjects = [filteredIntersects[0].object];
         this.sceneService.selectObject(filteredIntersects);
@@ -350,6 +354,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
           this.treeStructureService.setSelectedTreeNodeObjectId(
             this.sceneService.selectedObj.objectId,
           );
+          console.log(this.sceneService.selectedObj);
       }
   }
 
@@ -423,6 +428,17 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     guiCameraPositionFolder.add(this.settings, 'acceptPosition').name('Применить');
     guiCameraPositionFolder.add(this.settings, 'resetPosition').name('Сбросить');
     this.renderer.appendChild(this.viewerWrapper.nativeElement, this.gui.domElement);
+
+    //console.log(this.settings);
+    
+    const modelColor = this.gui.addFolder('Изменить цвет выбранной модели');
+    modelColor
+    .addColor({partColor: '#ffffff'}, 'partColor')
+      .name('Цвет')
+      .listen()
+      .onChange((color) => {
+        this.sceneService.setModelColor(color);
+      });
   }
 
   renderAnnotations(annotations: AnnotationI[]) {
@@ -438,7 +454,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
         sizeAttenuation: false,
       });
       const annotationSprite = new THREE.Sprite(annotationSpriteMaterial);
-      annotationSprite.scale.set(0.066, 0.066, 0.066);
+      annotationSprite.scale.set(0.04, 0.04, 0.04);
       annotationSprite.position.copy(
         vector.set(annotation.position.x, annotation.position.y, annotation.position.z),
       );
@@ -457,7 +473,8 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
       annotationLabel.name = 'annotationLabel_' + annotation.id;
       annotation.labelDomElement = annotationDiv;
       annotationSprite.attach(annotationLabel);
-
+      
+      
       annotation.rendered = true;
 
       const annotationDescriptionDiv = this.renderer.createElement('div');
@@ -706,6 +723,26 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.mouseDownPos.x === this.mouseUpPos.x && this.mouseDownPos.y === this.mouseUpPos.y) {
       this.setMouseCoords(e);
       this.setSelectedObj();
+      if (!this.sceneService.selectedObj?.parent) {
+        return;
+      }
+
+      let {x, y, z} = this.lastClickCoords;      
+      this.sceneService.clearAnnotations();
+      this.sceneService.setAnnotations([
+        {
+          id: 10,
+          title: '',
+          description: this.sceneService.selectedObj.parent.name,
+          position: {
+            x,
+            y,
+            z,
+          },
+          attachedObject: this.sceneService.selectedObj,
+        }
+      ])   
+
     }
   }
 

@@ -40,11 +40,10 @@ canvas {
   position: absolute;
   left: 25px;
   padding: 1em;
-  width: 200px;
+  width: fit-content;
   background: $blockDescriptionAnnotationBgColor;
   border-radius: 0.5em;
   transition: opacity 0.5s;
-  display: none;
 }
 
 .context-menu {

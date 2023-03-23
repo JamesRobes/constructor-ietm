@@ -3,37 +3,48 @@
         Добавить тест
     </button>
 
-    <div *ngIf="tests.length && !editMode">
+    <div *ngIf="tests.length && !editMode" class="existedTests">
         <span *ngFor="let test of tests">
             {{test.name}}
         </span>
     </div>
 
-    <div *ngIf="editMode">
+    <div *ngIf="editMode" class="testCreation">
         <div id="test" class="questionDiv">
-            <input [(ngModel)]="testName" placeholder="Название теста">
-            <!-- <div id="question" class="questionDiv">
-                <div>Вопрос №1</div>
-                <div>Выберите тип вопроса</div>
+            <input class="test-name" [(ngModel)]="testName" placeholder="Название теста" >
+            <div class="test-name">
+                Вопрос №{{questions.length+1}}
+            </div>
+            <form [formGroup]="formGroup" class="questionDiv">
                 <div>
-                    <div>
-                        <input type="radio" id="questionType_0" name="questionType">
-                        <label for="questionType_0">Выберите деталь</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="questionType_1" name="questionType">
-                        <label for="questionType_1">Какая деталь на экране?</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="questionType_2" name="questionType">
-                        <label for="questionType_2">Впишите название детали на экране</label>
-                    </div>
+                    <label>
+                        Заголовок вопроса:
+                        <input class="text" formControlName="header" placeholder="Заголовок вопроса">
+                    </label>
                 </div>
                 <div>
-                    <div> Введите текст вопроса</div>
-                    <input placeholder="Текст вопроса">
+                    <label>
+                        Тип вопроса:
+                        <select formControlName="type" placeholder="Тип вопроса">
+                            <option class="type" [value]="questionType.FindAPart">
+                                Найдите деталь
+                            </option>
+                            <option class="type" [value]="questionType.InsertNameOfPart">
+                                Введите название детали
+                            </option>
+                        </select>
+                    </label>
                 </div>
-            </div> -->
+                <div>
+                    <label [ngSwitch]="formGroup.value.type">
+                        Ответ:
+                        <input class="text" *ngSwitchCase="questionType.FindAPart" formControlName="answer"
+                            placeholder="Укажите деталь, которую нужно найти">
+                        <input class="text" *ngSwitchCase="questionType.InsertNameOfPart" formControlName="answer"
+                            placeholder="Укажите название выбранной детали">
+                    </label>
+                </div>
+            </form>
         </div>
 
     </div>
