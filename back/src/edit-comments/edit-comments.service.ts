@@ -10,7 +10,7 @@ export class EditCommentsService {
   constructor(
     @InjectModel(EditComment.name)
     private editCommentModel: Model<EditCommentDocument>,
-  ) {}
+  ) { }
 
   create(createEditCommentDto: CreateEditCommentDto) {
     const { articleId, authorId, text } = createEditCommentDto;
@@ -48,7 +48,7 @@ export class EditCommentsService {
       updateEditCommentDto.text !== comment.text
     )
       query.$set.text = updateEditCommentDto.text;
-    await this.editCommentModel.updateOne({ id }, query);
+    await this.editCommentModel.updateOne({ _id: id }, query);
     return await await this.editCommentModel.findById(id).exec();
   }
 

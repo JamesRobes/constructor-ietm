@@ -9,7 +9,7 @@ import { Category, CategoryDocument } from './schema/category.schema';
 export class CategoriesService {
   constructor(
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
-  ) {}
+  ) { }
 
   async create(createCategoryDto: CreateCategoryDto) {
     const newCategory = await this.categoryModel.create(createCategoryDto);
@@ -36,7 +36,7 @@ export class CategoriesService {
       )
         query.$set[key] = updateCategoryDto[key];
     }
-    await this.categoryModel.updateOne({ id }, query).exec();
+    const c = await this.categoryModel.updateOne({ _id: id }, query).exec();
     return await this.categoryModel.findById(id).exec();
   }
 

@@ -50,7 +50,7 @@ export class KnowledgeUsersService {
       query.$set.mainAdmin = updateKnowledgeUserDto.mainAdmin;
     if (updateKnowledgeUserDto.categoriesAdmin !== undefined)
       query.$set.categoriesAdmin = updateKnowledgeUserDto.categoriesAdmin;
-    await this.knowledgeUserModel.updateOne({ id }, query).exec();
+    await this.knowledgeUserModel.updateOne({ _id: id }, query).exec();
     return await this.knowledgeUserModel.findById(id);
   }
 

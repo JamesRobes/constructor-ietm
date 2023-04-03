@@ -10,7 +10,7 @@ export class TagsService {
   constructor(
     @InjectModel(Tag.name)
     private tagModel: Model<TagDocument>,
-  ) {}
+  ) { }
 
   create(createTagDto: CreateTagDto) {
     return this.tagModel.create(createTagDto);
@@ -30,7 +30,7 @@ export class TagsService {
     const query: { $set: any } = { $set: {} };
     if (!updateTagDto.category) query.$set.category = updateTagDto.category;
     if (!updateTagDto.name) query.$set.name = updateTagDto.name;
-    await this.tagModel.updateOne({ id }, query);
+    await this.tagModel.updateOne({ _id: id }, query);
     return await await this.tagModel.findById(id).exec();
   }
 
