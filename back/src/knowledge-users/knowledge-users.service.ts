@@ -7,20 +7,25 @@ import {
   KnowledgeUser,
   KnowledgeUserDocument,
 } from './schema/knowledge-user.schema';
+import { UserService } from 'src/user/service/user.service';
 
 @Injectable()
 export class KnowledgeUsersService {
   constructor(
     @InjectModel(KnowledgeUser.name)
     private knowledgeUserModel: Model<KnowledgeUserDocument>,
+    private userService: UserService
   ) { }
 
   async create(createKnowledgeUserDto: CreateKnowledgeUserDto) {
-    const { userId, mainAdmin, categoriesAdmin } = createKnowledgeUserDto;
+    const { email } = createKnowledgeUserDto;
+    const user = await this.userService.findByEmail(email)
+    if (!user)
+      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     const newUser = await this.knowledgeUserModel.create({
-      user: userId,
-      mainAdmin,
-      categoriesAdmin,
+      user: user,
+      mainAdmin: false,
+      categoriesAdmin: [],
     });
     return newUser;
   }
@@ -46,8 +51,6 @@ export class KnowledgeUsersService {
     if (!user)
       throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     const query: { $set: any } = { $set: {} };
-    if (updateKnowledgeUserDto.mainAdmin !== undefined)
-      query.$set.mainAdmin = updateKnowledgeUserDto.mainAdmin;
     if (updateKnowledgeUserDto.categoriesAdmin !== undefined)
       query.$set.categoriesAdmin = updateKnowledgeUserDto.categoriesAdmin;
     await this.knowledgeUserModel.updateOne({ _id: id }, query).exec();

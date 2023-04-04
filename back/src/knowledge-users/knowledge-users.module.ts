@@ -6,9 +6,11 @@ import {
   KnowledgeUser,
   KnowledgeUserSchema,
 } from './schema/knowledge-user.schema';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
+    UserModule,
     MongooseModule.forFeature([
       { name: KnowledgeUser.name, schema: KnowledgeUserSchema },
     ]),
@@ -16,4 +18,4 @@ import {
   controllers: [KnowledgeUsersController],
   providers: [KnowledgeUsersService],
 })
-export class KnowledgeUsersModule {}
+export class KnowledgeUsersModule { }

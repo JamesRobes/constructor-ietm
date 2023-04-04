@@ -15,7 +15,7 @@ export class UserService {
   constructor(
     private authService: AuthService,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-  ) {}
+  ) { }
 
   create(createUserDto: CreateUserDto): Observable<boolean> {
     return this.mailExists(createUserDto.email.toLowerCase()).pipe(
@@ -161,6 +161,10 @@ export class UserService {
 
   findAll() {
     return from(this.userModel.find());
+  }
+
+  async findByEmail(email: string) {
+    return await this.userModel.findOne({ email }).exec();
   }
 
   updateOne(updateData: UserDocument): Observable<boolean> {
