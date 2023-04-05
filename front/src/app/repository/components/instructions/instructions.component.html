@@ -21,6 +21,7 @@
               <thead>
                 <tr class="steps__row">
                   <th class="steps__column steps__column-time">Шаг</th>
+                  <th class="steps__column steps__column-action">Предпросмотр</th>
                   <th class="steps__column steps__column-action">Описание</th>
                   <th class="steps__column steps__column-action">Действия</th>
                 </tr>
@@ -29,6 +30,10 @@
                 <tr class="item" *ngFor="let step of selectedInstruction!.steps">
                   <td class="steps__column steps__column-time">
                     {{ step.index! + 1 }}
+                  </td>
+                  <td class="steps__column steps__column-action wrapper">
+                    <img class="preview" height="200px" [src]="step.img"
+                    (click)="sceneService.playAction(step.actions)"/>
                   </td>
                   <td class="steps__column steps__column-time">
                     {{ step.description }}

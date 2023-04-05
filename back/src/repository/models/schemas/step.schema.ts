@@ -14,6 +14,9 @@ export class Step {
 
   @Prop({ type: [ActionSchema], default: [] })
   actions: Action[];
+
+  @Prop()
+  img: string;
 }
 
 export const StepSchema = SchemaFactory.createForClass(Step);

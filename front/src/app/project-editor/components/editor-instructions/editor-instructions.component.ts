@@ -31,6 +31,7 @@ export class EditorInstructionsComponent implements OnInit {
   };
 
   currentInstructionStep: StepI = {
+    img: '',
     description: '',
     actions: [],
   };
@@ -104,6 +105,7 @@ export class EditorInstructionsComponent implements OnInit {
 
   addStep() {
     this.currentInstructionStep = {
+      img: '',
       description: '',
       actions: [],
     };
@@ -112,6 +114,10 @@ export class EditorInstructionsComponent implements OnInit {
   }
 
   saveStep(step: StepI) {
+    this.sceneService.viewer.renderer.render(this.sceneService.viewer.scene, this.sceneService.viewer.camera);
+    let canvas = <HTMLCanvasElement>document.getElementById("canvas");
+    console.log(canvas.toDataURL());
+    
     if (typeof step.index === 'number') {
       const stepInArray = this.currentInstruction.steps.find((el) => el.index === step.index);
       if (stepInArray) {
@@ -125,10 +131,19 @@ export class EditorInstructionsComponent implements OnInit {
       };
       this.currentInstruction.steps.push({
         index: this.currentInstruction.steps.length,
+        img: canvas.toDataURL(),
         description: step.description,
         actions: step.actions,
       });
     }
+    this.saveInstruction(this.currentInstruction);
+    
+    // canvas.toBlob(function (blob) {
+    //   const a = document.createElement("a");
+    //   a.href = URL.createObjectURL(blob!);
+    //   a.download = "snapshot";
+    //   a.click();
+    //   });
   }
 
   editStep(step: StepI) {
@@ -144,6 +159,7 @@ export class EditorInstructionsComponent implements OnInit {
 
   backToSteps() {
     this.currentInstructionStep = {
+      img: '',
       description: '',
       actions: [],
     };

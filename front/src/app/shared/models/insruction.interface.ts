@@ -24,6 +24,7 @@ export interface InstructionI {
 
 export interface StepI {
   index?: number;
+  img: string;
   description: string;
   actions: ActionI[];
 }
