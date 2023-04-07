@@ -25,9 +25,12 @@ export class ArticlesController {
   findAll(
     @Query('moderation') moderation: boolean,
     @Query('userId') userId: string,
-    @Query('categoryId') categoryId: string,
+    @Query('categoryId') category: string,
   ) {
-    const query = { moderation, userId, categoryId };
+    const query = { moderation, userId, category };
+    Object.keys(query).forEach(
+      (key) => query[key] === undefined && delete query[key],
+    );
     return this.articlesService.findAll(query);
   }
 

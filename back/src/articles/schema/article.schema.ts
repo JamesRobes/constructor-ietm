@@ -10,7 +10,7 @@ export class Article {
   @Prop({ length: 200, unique: true })
   title: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;
 
   @Prop()
@@ -24,7 +24,11 @@ export class Article {
   })
   likes: User[];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+  })
   category: Category;
 }
 

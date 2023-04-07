@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { from, map } from 'rxjs';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article, ArticleDocument } from './schema/article.schema';
@@ -13,30 +12,38 @@ export class ArticlesService {
   ) {}
 
   async create(createArticleDto: CreateArticleDto) {
-    const { title, data, userId, categoryId } = createArticleDto;
+    const { title, data, userId, category } = createArticleDto;
     const newArticle = await this.articleModel.create({
       title,
       user: userId,
       moderation: false,
       data,
       likes: [],
-      category: categoryId,
+      category,
     });
     return newArticle;
   }
 
-  findAll(
+  async findAll(
     query: {
       moderation?: boolean;
       userId?: string;
       categoryId?: string;
     } = {},
   ) {
-    return this.articleModel.find(query).exec();
+    console.log(query);
+    const articles = await this.articleModel
+      .find(query)
+      .populate('user category')
+      .exec();
+    return articles;
   }
 
   findOne(id: string) {
-    const article = this.articleModel.findById(id).exec();
+    const article = this.articleModel
+      .findById(id)
+      .populate('user category')
+      .exec();
     if (!article)
       throw new HttpException('Статья не найдена', HttpStatus.NOT_FOUND);
     return article;
@@ -48,11 +55,17 @@ export class ArticlesService {
       throw new HttpException('Статья не найдена', HttpStatus.NOT_FOUND);
     let query = { $set: updateArticleDto };
     await this.articleModel.updateOne({ _id: id }, query).exec();
-    const newArticle = await this.articleModel.findById(id).exec();
+    const newArticle = await this.articleModel
+      .findById(id)
+      .populate('user category')
+      .exec();
     return newArticle;
   }
 
   remove(id: string) {
-    return this.articleModel.findByIdAndDelete(id).exec();
+    return this.articleModel
+      .findByIdAndDelete(id)
+      .populate('user category')
+      .exec();
   }
 }
