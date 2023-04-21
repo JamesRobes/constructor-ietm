@@ -1,15 +1,17 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
+import { User } from '../../user/models/schemas/user.schema';
+import { Category } from '../../categories/schema/category.schema';
 
-export type ArticleDocument = Article & Document;
+export type ArticleDocument = Article & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class Article {
   @Prop({ length: 200, unique: true })
   title: string;
 
-  @Prop()
-  userId: string;
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  user: User;
 
   @Prop()
   moderation: boolean;
@@ -17,8 +19,17 @@ export class Article {
   @Prop(raw({}))
   data: Record<string, any>;
 
-  @Prop()
-  likes: string[];
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  })
+  likes: User[];
+
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+  })
+  category: Category;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);
