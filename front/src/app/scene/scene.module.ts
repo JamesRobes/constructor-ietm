@@ -12,7 +12,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import { ViewCubeComponent } from './components/view-cube/view-cube.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ViewerAnnotationComponent } from './components/viewer-annotation/viewer-annotation.component';
+import { TreeStructureModule } from '../tree-structure/tree-structure.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { ViewerAnnotationComponent } from './components/viewer-annotation/viewer
     MatRadioModule,
     FormsModule,
     MatCheckboxModule,
+    MatDialogModule,
+    TreeStructureModule
   ],
   exports: [SceneComponent],
 })
-export class SceneModule {}
+export class SceneModule { }

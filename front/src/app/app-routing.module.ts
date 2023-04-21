@@ -5,6 +5,9 @@ import { UserResolverService } from './shared/resolvers/user-resolver';
 
 const routes: Routes = [
   {
+    path: 'iframe', loadChildren: () => import('./iframe/iframe.module').then(m => m.IframeModule)
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
     canActivate: [AuthGuard],
@@ -26,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
