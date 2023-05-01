@@ -12,7 +12,7 @@ module.exports = {
       extends: [
         'plugin:@angular-eslint/recommended',
         'plugin:@angular-eslint/template/process-inline-templates',
-        'plugin:prettier/recommended',
+        'prettier',
       ],
       rules: {
         '@angular-eslint/directive-selector': [
@@ -33,17 +33,11 @@ module.exports = {
         ],
         '@angular-eslint/no-empty-lifecycle-method': 'warn',
         '@angular-eslint/no-host-metadata-property': 'warn',
-        'prettier/prettier': [
-          'error',
-          {
-            endOfLine: 'auto',
-          },
-        ],
       },
     },
     {
       files: ['*.html'],
-      extends: ['plugin:@angular-eslint/template/recommended'],
+      extends: ['plugin:@angular-eslint/template/recommended', 'prettier'],
       rules: {},
     },
   ],

@@ -28,4 +28,4 @@ import { InterceptorService } from './shared/services/interceptor.service';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

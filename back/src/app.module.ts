@@ -12,6 +12,10 @@ import { TeamModule } from './team/team.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ImagesUploadModule } from './images-upload/images-upload.module';
 import { ArticlesModule } from './articles/articles.module';
+import { CategoriesModule } from './categories/categories.module';
+import { KnowledgeUsersModule } from './knowledge-users/knowledge-users.module';
+import { EditCommentsModule } from './edit-comments/edit-comments.module';
+import { TagsModule } from './tags/tags.module';
 
 const modules = [
   ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env', './.env'] }),
@@ -23,6 +27,9 @@ const modules = [
   RepositoryModule,
   ImagesUploadModule,
   ArticlesModule,
+  CategoriesModule,
+  KnowledgeUsersModule,
+  EditCommentsModule,
 ];
 
 if (process.env.NODE_ENV !== 'development') {
