@@ -6,6 +6,7 @@
           class="nav-list__link nav-list__link_fs-24"
           routerLink="/main"
           routerLinkActive="nav-list__link_active"
+          (click)="onClick()"
           >Интерактивные инструкции</a
         >
       </li>
@@ -67,7 +68,7 @@
               src="assets/svg/repositories-link.svg"
               alt="репозитории"
             />
-            <a class="user-menu__item-action" routerLink="/user-repositories">Мои репозитории</a>
+            <a (click)="onClick()" class="user-menu__item-action" routerLink="/user-repositories">Мои репозитории</a>
           </div>
           <div class="user-menu__item" mat-menu-item>
             <img class="user-menu__item-image" src="assets/svg/teams-link.svg" alt="команды" />

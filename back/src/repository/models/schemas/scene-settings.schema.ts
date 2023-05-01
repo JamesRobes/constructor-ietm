@@ -14,6 +14,9 @@ export class SceneSettings {
 
   @Prop({ type: PositionSchema, default: null })
   cameraPosition: Position;
+
+  @Prop({default: '#ffffff'})
+  partColor: string;
 }
 
 export const SceneSettingsSchema = SchemaFactory.createForClass(SceneSettings);

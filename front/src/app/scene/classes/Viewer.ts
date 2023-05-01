@@ -9,6 +9,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 import { VIEWER_STATE } from '../models/viewerState.enum';
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls';
 import {
   CAMERA_FAR,
   CAMERA_FOV,
@@ -25,6 +26,7 @@ import { Renderer2 } from '@angular/core';
 export class Viewer {
   scene: MainScene;
   renderer: THREE.WebGLRenderer;
+  transformControl!: TransformControls; 
   composer: any;
   outlinePass: any;
   camera: THREE.PerspectiveCamera;
@@ -74,7 +76,7 @@ export class Viewer {
   }
 
   setScene() {
-    this.scene = new MainScene();
+    this.scene = new MainScene();    
   }
 
   setCamera(aspect: any) {
@@ -94,6 +96,12 @@ export class Viewer {
       alpha: true,
     });
     this.renderer.shadowMap.enabled = true;
+    this.transformControl = new TransformControls(this.camera, canvas);
+    this.scene.add(this.transformControl);
+    this.transformControl.addEventListener('dragging-changed', (event) => {
+      this.controls.enabled = !event["value"];
+      });
+    this.transformControl.space = "local";
     this.renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
     this.renderer.setPixelRatio(
       pixelRatio > RENDERER_PIXEL_RATIO ? RENDERER_PIXEL_RATIO : pixelRatio,

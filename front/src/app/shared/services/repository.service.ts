@@ -8,9 +8,12 @@ import { RepositoryI } from '../models/repository.interface';
 @Injectable({
   providedIn: 'root',
 })
+
+
+
 export class RepositoryService {
   private apiUrl: string = environment.baseUrl;
-
+  editMode = false;
   constructor(private http: HttpClient) {}
 
   create(createRepositoryDto: CreateRepositoryDto): Observable<RepositoryI> {

@@ -16,6 +16,7 @@ import { InterceptorService } from './shared/services/interceptor.service';
     BrowserAnimationsModule,
     HttpClientModule,
     MatSnackBarModule,
+
   ],
   providers: [
     Title,

@@ -16,6 +16,7 @@ import { AnnotationI } from 'src/app/shared/models/annotation.interface';
 import { RepositoryI } from 'src/app/shared/models/repository.interface';
 import { TreeStructureI } from 'src/app/shared/models/treeStructure.interface';
 import { LoadingService } from 'src/app/shared/services/loading.service';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
 import { TreeStructureService } from 'src/app/tree-structure/services/tree-structure.service';
 import { SubSink } from 'subsink';
 export const enum VIEWER_MOUSE_MODE {
@@ -70,6 +71,7 @@ export class EditorViewerComponent implements OnInit {
     private loadingService: LoadingService,
     private settingsService: SettingsService,
     private instructionsService: InstructionsService,
+    private repo: RepositoryService,
   ) {}
 
   ngOnInit(): void {
@@ -174,6 +176,7 @@ export class EditorViewerComponent implements OnInit {
       settings: this.settingsService.getSettings(),
       instructions: this.instructionsService.getIntructions(),
     });
+    this.repo.editMode = false;
   }
 
   onUpdateTree(tree: TreeStructureI) {

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { UserI } from '../../models/user.interface';
 import { SettingsComponent } from '../settings/settings.component';
+import { RepositoryService } from '../../services/repository.service';
 
 @Component({
   selector: 'app-header',
@@ -21,12 +22,17 @@ export class HeaderComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
+    private repo: RepositoryService,
   ) {}
 
   ngOnInit(): void {
     if (this.route.snapshot.queryParams.searchQuery) {
       this.searchValue = this.route.snapshot.queryParams.searchQuery;
     }
+  }
+
+  onClick() {
+    this.repo.editMode = false;
   }
 
   openSettings() {

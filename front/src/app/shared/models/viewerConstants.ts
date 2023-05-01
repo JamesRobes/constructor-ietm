@@ -22,7 +22,7 @@ export const CLICKED_OBJ_MATERIAL = new THREE.MeshStandardMaterial({
   roughness: 1.0,
   metalness: 0.0,
   side: THREE.DoubleSide,
-  opacity: 0.75,
+  opacity: 1,
   transparent: true,
 });
 

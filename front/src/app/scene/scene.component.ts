@@ -41,6 +41,7 @@ import { skip } from 'rxjs/operators';
 import { Settings } from './classes/Settings';
 import { SettingsService } from './services/settings.service';
 import { SceneSettingsI } from '../shared/models/sceneSettingsI.interface';
+import { RepositoryService } from '../shared/services/repository.service';
 
 export enum VIEWER_BUTTONS {
   Default,
@@ -151,7 +152,8 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialog: MatDialog,
     private treeStructureService: TreeStructureService,
     private settingsService: SettingsService,
-  ) {}
+    private repo: RepositoryService,
+  ) { }
 
   ngOnInit(): void {
     this.settings = new Settings(
@@ -208,7 +210,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.initialSettings) {
       this.settings.grid = this.initialSettings.grid;
       this.settings.background = this.initialSettings.background;
-      this.settings.partColor = this.initialSettings.partColor;
+      this.settings.partColor = this.initialSettings.partColor || '#ffffff';
       this.settings.cameraPosition = this.initialSettings.cameraPosition;
     }
 
@@ -327,14 +329,14 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
   animate() {
     TWEEN.update();
     this.animateRequestId = window.requestAnimationFrame(() => this.animate());
-    this.setHoveredObj();
+    //this.setHoveredObj();
     this.sceneService.animateScene();
     if (this.cube) this.cube.positionSettingsCube();
   }
 
   setMouseCoords(e: MouseEvent) {
     this.mouseCoords = { ...this.getMouseCoorsByMouseEvent(e) };
-    this.setHoveredObj();
+    //this.setHoveredObj();
   }
 
   setSelectedObj() {
@@ -354,19 +356,28 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
           this.treeStructureService.setSelectedTreeNodeObjectId(
             this.sceneService.selectedObj.objectId,
           );
-          console.log(this.sceneService.selectedObj);
+        //console.log(this.sceneService.selectedObj);
+        //console.log("color is " + (this.sceneService.selectedObj.material.color as THREE.Color).getHexString());
+        //console.log("color is " + this.sceneService.selectedObj.material.color.r)
+      } else {
+        //this.sceneService.selectObject(null);
+      }
+      if (this.repo.editMode) {
+      this.destroyGui();
+      this.setGui();
+      this.gui.closed = false;
       }
   }
 
-  setHoveredObj() {
-    this.sceneService.setHoveredObj(
-      this.activeBtnIndex === VIEWER_BUTTONS.Isolate,
-      this.mouseCoords,
-    );
-  }
+  // setHoveredObj() {
+  //   this.sceneService.setHoveredObj(
+  //     this.activeBtnIndex === VIEWER_BUTTONS.Isolate,
+  //     this.mouseCoords,
+  //   );
+  // }
 
   setGui() {
-    this.gui.closed = true;
+    this.gui.closed = false;
     const guiGridFolder = this.gui.addFolder('Сетка');
     guiGridFolder
       .add(this.settings, 'grid')
@@ -430,15 +441,74 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.appendChild(this.viewerWrapper.nativeElement, this.gui.domElement);
 
     //console.log(this.settings);
-    
-    const modelColor = this.gui.addFolder('Изменить цвет выбранной модели');
-    modelColor
-    .addColor({partColor: '#ffffff'}, 'partColor')
-      .name('Цвет')
-      .listen()
-      .onChange((color) => {
-        this.sceneService.setModelColor(color);
-      });
+
+    // let partColor = {String};
+    // if(this.sceneService.selectedObj != null) {
+    //   partColor: (this.sceneService.selectedObj.material.color as THREE.Color).getHexString()
+    // }
+
+    //console.log((this.sceneService.selectedObj.material.color as THREE.Color).getHexString())
+
+    const partProperties = this.gui.addFolder('Изменить параметры выбранной детали');
+    if (this.sceneService.selectedObj) {
+      partProperties.closed = false;
+
+      partProperties
+        .addColor(this.settings, 'partColor')
+        .name('Цвет')
+        .listen()
+        .setValue(`#${(this.sceneService.selectedObj.material.color as THREE.Color).getHexString()}`)
+        .onChange((color) => {
+          this.sceneService.setModelColor(color);
+        });
+
+      partProperties
+        .add(this.settings, 'roughness')
+        .min(0)
+        .max(1)
+        .step(0.001)
+        .setValue(this.sceneService.selectedObj.material.roughness)
+        .name("Шероховатость")
+        .onChange((roughness) => {
+          this.sceneService.selectedObj.material.roughness = roughness;
+        });
+
+      partProperties
+        .add(this.settings, 'metalness')
+        .min(0)
+        .max(1)
+        .step(0.001)
+        .setValue(this.sceneService.selectedObj.material.metalness)
+        .name("Металлический фактор")
+        .onChange((metalness) => {
+          this.sceneService.selectedObj.material.metalness = metalness;
+        });
+
+      partProperties
+        .add(this.settings, 'transparent')
+        .name("Прозрачность")
+        .onChange((transparent) => {
+          let partID = this.sceneService.selectedObj.modelId;
+          this.sceneService.getModel().uuid = partID;
+          this.sceneService.selectedObj.material.transparent = transparent;
+        });
+
+      partProperties
+        .add(this.settings, 'opacity')
+        .min(0)
+        .max(1)
+        .step(0.01)
+        .name('Процент прозрачности')
+        .setValue(this.sceneService.selectedObj.material.opacity)
+        .onChange((opacity) => {
+          this.sceneService.selectedObj.material.opacity = opacity;
+          this.sceneService.selectedObj.defaultMaterial.opacity = opacity;
+        });
+    }
+  }
+
+  destroyGui() {
+    this.gui.destroy();
   }
 
   renderAnnotations(annotations: AnnotationI[]) {
@@ -473,8 +543,8 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
       annotationLabel.name = 'annotationLabel_' + annotation.id;
       annotation.labelDomElement = annotationDiv;
       annotationSprite.attach(annotationLabel);
-      
-      
+
+
       annotation.rendered = true;
 
       const annotationDescriptionDiv = this.renderer.createElement('div');
@@ -656,7 +726,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case VIEWER_BUTTONS.Isolate:
         this.resetContextMenu();
-        this.sceneService.fitToView(this.sceneService.selectedObj.objectId, () => {});
+        this.sceneService.fitToView(this.sceneService.selectedObj.objectId, () => { });
         break;
       case VIEWER_BUTTONS.StopAnimation:
         this.sceneService.stopAnimation();
@@ -727,7 +797,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
 
-      let {x, y, z} = this.lastClickCoords;      
+      let { x, y, z } = this.lastClickCoords;
       this.sceneService.clearAnnotations();
       this.sceneService.setAnnotations([
         {
@@ -741,7 +811,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           attachedObject: this.sceneService.selectedObj,
         }
-      ])   
+      ])
 
     }
   }

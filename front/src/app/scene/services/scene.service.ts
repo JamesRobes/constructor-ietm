@@ -26,6 +26,7 @@ import { Viewer } from '../classes/Viewer';
 import { VIEWER_STATE } from '../models/viewerState.enum';
 import { ActionI, ActionType } from 'src/app/shared/models/insruction.interface';
 import { SettingsService } from './settings.service';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +58,8 @@ export class SceneService {
     private http: HttpClient,
     private sectionService: SectionService,
     private settingsService: SettingsService,
-  ) {}
+    private repo: RepositoryService,
+  ) { }
 
   loadDefaultModel(): Observable<any> {
     return this.http.get(`${this.apiUrl}/viewer/default`, { withCredentials: true });
@@ -222,16 +224,16 @@ export class SceneService {
     const match = color.match(/.{2}/g);
     let [r, g, b]: any[] = [];
     if (match) [r, g, b] = match;
-    [r, g, b] = [parseInt(r, 16) , parseInt(g, 16) , parseInt(b, 16) ];
+    [r, g, b] = [parseInt(r, 16), parseInt(g, 16), parseInt(b, 16)];
 
-    r = (r/255);
-    g = (g/255);
-    b = (b/255);   
+    r = (r / 255);
+    g = (g / 255);
+    b = (b / 255);
 
     console.log(this.selectedObj.defaultMaterial);
-    this.selectedObj.defaultMaterial.color.r = r;
-    this.selectedObj.defaultMaterial.color.g = g;
-    this.selectedObj.defaultMaterial.color.b = b;
+    this.selectedObj.material.color.r = r;
+    this.selectedObj.material.color.g = g;
+    this.selectedObj.material.color.b = b;
     //obj!.material.color = {r:0.5, g: 0.4, b: 0.3};
   }
 
@@ -301,8 +303,8 @@ export class SceneService {
 
     const lengthVec = Math.sqrt(
       Math.pow(oldCamPos.x - this.targetPosition.x, 2) +
-        Math.pow(oldCamPos.y - this.targetPosition.y, 2) +
-        Math.pow(oldCamPos.z - this.targetPosition.z, 2),
+      Math.pow(oldCamPos.y - this.targetPosition.y, 2) +
+      Math.pow(oldCamPos.z - this.targetPosition.z, 2),
     );
 
     const offsetUnit = lengthVec;
@@ -418,7 +420,7 @@ export class SceneService {
           this.moveCameraWithAnimation(
             this.viewer.camera.position,
             action.value.position,
-            () => {},
+            () => { },
           );
           break;
         case ActionType.Rotation:
@@ -441,7 +443,7 @@ export class SceneService {
           this.restoreView();
           break;
         case ActionType.FitToView:
-          this.fitToView(action.value.objectId, () => {});
+          this.fitToView(action.value.objectId, () => { });
           break;
         default:
           break;
@@ -511,10 +513,11 @@ export class SceneService {
     } else {
       if (this.selectedObj) {
         this.viewer.outlinePass.selectedObjects = [];
-        this.selectedObj.material = this.selectedObj.defaultMaterial.clone();
+        //this.selectedObj.material = this.selectedObj.material.clone();
         this.selectedObj = null;
       }
     }
+
     return null;
   }
 
@@ -536,19 +539,68 @@ export class SceneService {
     }
   }
 
-  selectObject(filteredIntersects: THREE.Intersection[]) {
-    if (this.selectedObj) {
-      this.selectedObj.material = this.selectedObj.defaultMaterial.clone();
-      if (this.selectedObj?.uuid === filteredIntersects[0].object.uuid) {
+  selectObject(filteredIntersects: THREE.Intersection[] ) {
+    if (!this.selectedObj) { //проверка существующего выделения
+      this.selectedObj = filteredIntersects[0].object; //выбор первого объекта массива пересечений
+      if (this.selectedObj) 
+      {
+        //this.selectedObj.defaultMaterial = CLICKED_OBJ_MATERIAL; //изменение материала
+        //this.selectedObj.material.opacity = 0.5 //изменение прозрачности материала
+        if (this.repo.editMode) 
+        {          
+          this.viewer.transformControl.attach(this.selectedObj); //добавление элементов перемещения детали
+        }      
+      }     
+    } else {
+      if (this.selectedObj?.uuid === filteredIntersects[0].object.uuid) { //если был выбран ранее выбранный объект
+        this.selectedObj.material = this.selectedObj.defaultMaterial.clone();
+        this.viewer.transformControl.detach();        
         this.selectedObj = null;
       } else {
-        this.selectedObj = filteredIntersects[0].object;
-        this.selectedObj.material = CLICKED_OBJ_MATERIAL;
+        this.selectedObj.material = this.selectedObj.defaultMaterial.clone(); //если был выбран новый объект
+        this.selectedObj = filteredIntersects[0].object;        
+        this.selectedObj.defaultMaterial = this.selectedObj.material.clone();
+        //this.selectedObj.material.opacity = 0.5
+        if (this.repo.editMode) 
+        {
+          this.viewer.transformControl.attach(this.selectedObj);
+        }
       }
-    } else {
-      this.selectedObj = filteredIntersects[0].object;
-      this.selectedObj.material = CLICKED_OBJ_MATERIAL;
     }
+
+    // const newSelectedObj = filteredIntersects ? filteredIntersects[0].object : null;
+
+    // const applySelection = (object: any) => {
+    //   object.defaultMaterial = object.material.clone();
+    //   object.material.opacity = 0.5;
+    // }
+
+    // const clearSelection = (object: any) => {
+    //   object.material = object.defaultMaterial.clone();
+    // }    
+
+    // console.log(newSelectedObj);
+    // if (newSelectedObj) {
+    //   if (this.selectedObj) {
+    //     console.log("1");
+    //     clearSelection(this.selectedObj);
+    //   }
+  
+    //   if (newSelectedObj.uuid !== this.selectedObj?.uuid) {
+    //     console.log("2");
+    //     this.selectedObj = newSelectedObj;
+    //     applySelection(this.selectedObj);
+    //   } else {
+    //     console.log("3");
+    //     this.selectedObj = null;
+    //   }
+    // } else {
+    //   if (this.selectedObj) {
+    //     console.log("4");
+    //     clearSelection(this.selectedObj);
+    //     this.selectedObj = null;
+    //   }
+    // }
   }
 
   setHoveredObj(isolateIsActive: boolean, mouseCoords: any) {

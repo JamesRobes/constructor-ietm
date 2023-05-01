@@ -27,6 +27,7 @@ export class RepositoryComponent implements OnInit {
   isInSubscriptions = false;
   viewerInitialized = false;
 
+
   user: UserI | null = null;
 
   hasAccess = false;
