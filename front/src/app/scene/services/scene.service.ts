@@ -97,6 +97,7 @@ export class SceneService {
 
   setViewer(viewer: Viewer) {
     this.viewer = viewer;
+    this.viewer.sceneService = this;
   }
 
   getHiddenObjects() {
@@ -193,7 +194,7 @@ export class SceneService {
     };
     this.viewer.camera.position.set(posCamera.x, posCamera.y, posCamera.z);
     console.log(this.viewer.camera.position);
-    this.viewer.controls.update();
+    this.viewer.orbitControls.update();
   }
 
   setDefaultTarget(name: string) {
@@ -203,12 +204,12 @@ export class SceneService {
     const vector = new THREE.Vector3();
 
     const center = boundingBox.getCenter(vector);
-    this.viewer.controls.target = new THREE.Vector3(center.x, center.y, center.z);
+    this.viewer.orbitControls.target = new THREE.Vector3(center.x, center.y, center.z);
 
     this.targetPosition = center;
 
     this.viewer.camera.updateProjectionMatrix();
-    this.viewer.controls.update();
+    this.viewer.orbitControls.update();
   }
 
   setBackgroundColorScene(color: string) {
@@ -239,7 +240,7 @@ export class SceneService {
 
   animateScene() {
     this.viewer.mixer?.update(this.viewer.clock.getDelta() / 3);
-    this.viewer.controls.update();
+    this.viewer.orbitControls.update();
     if (this.viewer.composer) this.viewer.composer.render();
     if (this.viewer.labelRenderer)
       this.viewer.labelRenderer.render(this.viewer.scene, this.viewer.camera);
@@ -293,7 +294,7 @@ export class SceneService {
 
     // this.viewer.camera.position.set(finishPosition.x, finishPosition.y, finishPosition.z);
 
-    this.viewer.controls.target = new THREE.Vector3(
+    this.viewer.orbitControls.target = new THREE.Vector3(
       this.targetPosition.x,
       this.targetPosition.y,
       this.targetPosition.z,
@@ -343,7 +344,7 @@ export class SceneService {
 
   moveCameraToDefaultPosition(onCompleteCallback: () => void) {
     // const posCamera = JSON.parse(localStorage.getItem('positionCamera')!) || '';
-    this.viewer.controls.enabled = false;
+    this.viewer.orbitControls.enabled = false;
     const oldCameraPos = this.viewer.camera.position.clone();
 
     const settings = this.settingsService.getSettings();
@@ -356,7 +357,7 @@ export class SceneService {
 
     this.moveCameraWithAnimation(oldCameraPos, newCameraPos, onCompleteCallback);
     // this.viewer.controls.reset();
-    this.viewer.controls.target = new THREE.Vector3(
+    this.viewer.orbitControls.target = new THREE.Vector3(
       this.targetPosition.x,
       this.targetPosition.y,
       this.targetPosition.z,
@@ -412,7 +413,7 @@ export class SceneService {
     actions.forEach((action) => {
       switch (action.type) {
         case ActionType.Camera:
-          this.viewer.controls.target = new THREE.Vector3(
+          this.viewer.orbitControls.target = new THREE.Vector3(
             action.value.target.x,
             action.value.target.y,
             action.value.target.z,
@@ -452,7 +453,7 @@ export class SceneService {
   }
 
   resetAction() {
-    this.viewer.controls.target = new THREE.Vector3(
+    this.viewer.orbitControls.target = new THREE.Vector3(
       this.targetPosition.x,
       this.targetPosition.y,
       this.targetPosition.z,
@@ -463,15 +464,15 @@ export class SceneService {
     this.restoreView();
     this.resetObjectIsolation();
     this.moveCameraToDefaultPosition(() => {
-      this.viewer.controls.enabled = true;
+      this.viewer.orbitControls.enabled = true;
     });
   }
 
   rotateCamera(rotateSpeedValue: number) {
-    this.viewer.controls.enabled = false;
-    this.viewer.controls.autoRotate = true;
-    this.viewer.controls.autoRotateSpeed = rotateSpeedValue;
-    this.viewer.controls.target = new THREE.Vector3(
+    this.viewer.orbitControls.enabled = false;
+    this.viewer.orbitControls.autoRotate = true;
+    this.viewer.orbitControls.autoRotateSpeed = rotateSpeedValue;
+    this.viewer.orbitControls.target = new THREE.Vector3(
       this.targetPosition.x,
       this.targetPosition.y,
       this.targetPosition.z,
@@ -479,12 +480,12 @@ export class SceneService {
   }
 
   stopRotatingCamera() {
-    this.viewer.controls.enabled = true;
-    this.viewer.controls.autoRotate = false;
+    this.viewer.orbitControls.enabled = true;
+    this.viewer.orbitControls.autoRotate = false;
   }
 
   onRotateCameraSpeedChanged(valueSpeed: any) {
-    this.viewer.controls.autoRotateSpeed = -valueSpeed;
+    this.viewer.orbitControls.autoRotateSpeed = -valueSpeed;
   }
 
   setSelectedObj(isolateIsActive: boolean, mouseCoords: any, mouseMode: number) {
@@ -513,7 +514,6 @@ export class SceneService {
     } else {
       if (this.selectedObj) {
         this.viewer.outlinePass.selectedObjects = [];
-        //this.selectedObj.material = this.selectedObj.material.clone();
         this.selectedObj = null;
       }
     }
@@ -539,30 +539,33 @@ export class SceneService {
     }
   }
 
-  selectObject(filteredIntersects: THREE.Intersection[] ) {
+  selectObject(filteredIntersects: THREE.Intersection[]) {
     if (!this.selectedObj) { //проверка существующего выделения
       this.selectedObj = filteredIntersects[0].object; //выбор первого объекта массива пересечений
-      if (this.selectedObj) 
-      {
+      if (this.selectedObj) {
         //this.selectedObj.defaultMaterial = CLICKED_OBJ_MATERIAL; //изменение материала
         //this.selectedObj.material.opacity = 0.5 //изменение прозрачности материала
-        if (this.repo.editMode) 
-        {          
+        if (this.repo.editMode) {
           this.viewer.transformControl.attach(this.selectedObj); //добавление элементов перемещения детали
-        }      
-      }     
+        }
+        if (this.repo.dragMode) {
+          this.viewer.transformControl.attach(this.selectedObj); //добавление элементов перемещения детали
+        }
+      }
     } else {
       if (this.selectedObj?.uuid === filteredIntersects[0].object.uuid) { //если был выбран ранее выбранный объект
         this.selectedObj.material = this.selectedObj.defaultMaterial.clone();
-        this.viewer.transformControl.detach();        
+        this.viewer.transformControl.detach();
         this.selectedObj = null;
       } else {
         this.selectedObj.material = this.selectedObj.defaultMaterial.clone(); //если был выбран новый объект
-        this.selectedObj = filteredIntersects[0].object;        
+        this.selectedObj = filteredIntersects[0].object;
         this.selectedObj.defaultMaterial = this.selectedObj.material.clone();
         //this.selectedObj.material.opacity = 0.5
-        if (this.repo.editMode) 
-        {
+        if (this.repo.editMode) {
+          this.viewer.transformControl.attach(this.selectedObj);
+        }
+        if (this.repo.dragMode) {
           this.viewer.transformControl.attach(this.selectedObj);
         }
       }
@@ -585,7 +588,7 @@ export class SceneService {
     //     console.log("1");
     //     clearSelection(this.selectedObj);
     //   }
-  
+
     //   if (newSelectedObj.uuid !== this.selectedObj?.uuid) {
     //     console.log("2");
     //     this.selectedObj = newSelectedObj;
@@ -602,6 +605,8 @@ export class SceneService {
     //   }
     // }
   }
+  
+  
 
   setHoveredObj(isolateIsActive: boolean, mouseCoords: any) {
     if (isolateIsActive || this.viewer.state === VIEWER_STATE.Isolated) return;
@@ -750,6 +755,14 @@ export class SceneService {
     }
   }
 
+  recordDrag(uuid: string, position: THREE.Vector3) {
+    this.actions.push({
+      index: this.actions.length,
+      type: ActionType.Drag,
+      value: { uuid, position },
+    });
+  }
+
   toggleObjectVisibilityById(objectId: string) {
     const obj = this.viewer.scene.getObjectByProperty('objectId', objectId)!;
     obj.visible = !obj.visible;
@@ -775,6 +788,9 @@ export class SceneService {
       this.viewer.outlinePass.selectedObjects = [];
       if (this.isRecording$.value) this.recordAction(ActionType.RestoreView, '');
     }
+
+    this.viewer.scene.traverse(obj => { if (obj.type == "Mesh") obj.position.set(0,0,0);})
+
     if (this.viewer.state === VIEWER_STATE.Isolated) this.resetObjectIsolation();
   }
 
@@ -795,9 +811,9 @@ export class SceneService {
     let cameraZ = Math.max(dx, dy);
     cameraZ *= offset;
 
-    if (this.viewer.controls !== undefined) {
+    if (this.viewer.orbitControls !== undefined) {
       const center = boundingBox.getCenter(vector);
-      this.viewer.controls.target = new THREE.Vector3(center.x, center.y, center.z);
+      this.viewer.orbitControls.target = new THREE.Vector3(center.x, center.y, center.z);
       const oldCameraPos = this.viewer.camera.position.clone();
       const tween = new TWEEN.Tween(oldCameraPos)
         .to(new THREE.Vector3(cameraZ, center.y, cameraZ), CAMERA_ANIM_DUR)
@@ -809,7 +825,7 @@ export class SceneService {
         .onComplete(onCompleteCallback)
         .start();
       this.viewer.camera.updateProjectionMatrix();
-      this.viewer.controls.update();
+      this.viewer.orbitControls.update();
     }
   }
 

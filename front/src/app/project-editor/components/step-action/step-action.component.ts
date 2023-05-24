@@ -56,6 +56,8 @@ export class StepActionComponent implements OnInit {
         return 'Восстановление';
       case ActionType.FitToView:
         return 'Приближение';
+      case ActionType.Drag:
+        return 'Перемещение';
       default:
         return '';
     }
@@ -69,6 +71,8 @@ export class StepActionComponent implements OnInit {
         return 'Скорость: ' + action.value;
       case ActionType.Explode:
         return 'Сила: ' + action.value;
+      case ActionType.Drag:
+        return 'Перемещение: ' + JSON.stringify(action.value);
       case ActionType.Section:
         return 'Значение: ' + JSON.stringify(action.value);
       case ActionType.Hide:

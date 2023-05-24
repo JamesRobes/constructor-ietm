@@ -22,7 +22,6 @@ import { LoadingService } from 'src/app/shared/services/loading.service';
 import { RepositoryService } from 'src/app/shared/services/repository.service';
 import { SubSink } from 'subsink';
 
-
 @Component({
   selector: 'app-init-repository',
   templateUrl: './init-repository.component.html',
@@ -40,7 +39,6 @@ export class InitRepositoryComponent implements OnInit, OnDestroy {
   userTeams: TeamI[] = [];
   repositoryToEdit: RepositoryI | null = null;
   editMode = false;
-
   constructor(
     public dataStore: DataStoreService,
     public dialog: MatDialog,
@@ -77,10 +75,10 @@ export class InitRepositoryComponent implements OnInit, OnDestroy {
       type: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.type, [
         Validators.required,
       ]),
-      description: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.description, [
-        Validators.required,
-        Validators.maxLength(1000),
-      ]),
+      // description: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.description, [
+      //   Validators.required,
+      //   Validators.maxLength(1000),
+      // ]),
       preview: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.preview, []),
     });
   }

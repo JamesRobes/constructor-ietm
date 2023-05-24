@@ -26,4 +26,5 @@ export enum ActionType {
   Annotation,
   RestoreView,
   FitToView,
+  Move,
 }

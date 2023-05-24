@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { InterceptorService } from './shared/services/interceptor.service';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -16,7 +15,6 @@ import { InterceptorService } from './shared/services/interceptor.service';
     BrowserAnimationsModule,
     HttpClientModule,
     MatSnackBarModule,
-
   ],
   providers: [
     Title,

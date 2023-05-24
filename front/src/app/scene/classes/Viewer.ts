@@ -22,6 +22,7 @@ import {
   RENDERER_PIXEL_RATIO,
 } from 'src/app/shared/models/viewerConstants';
 import { Renderer2 } from '@angular/core';
+import { SceneService } from '../services/scene.service';
 
 export class Viewer {
   scene: MainScene;
@@ -31,7 +32,7 @@ export class Viewer {
   outlinePass: any;
   camera: THREE.PerspectiveCamera;
   labelRenderer: any;
-  controls: any;
+  orbitControls: any;
   raycaster: THREE.Raycaster;
   model: THREE.Object3D;
   state = VIEWER_STATE.Default;
@@ -40,6 +41,7 @@ export class Viewer {
   animations: any;
   mixer: THREE.AnimationMixer;
   clock: THREE.Clock;
+  sceneService: SceneService;
 
   constructor(
     canvas: any,
@@ -49,6 +51,7 @@ export class Viewer {
     aspect: any,
     model: any,
     renderer2: Renderer2,
+
   ) {
     this.setScene();
     this.setCamera(aspect);
@@ -99,7 +102,11 @@ export class Viewer {
     this.transformControl = new TransformControls(this.camera, canvas);
     this.scene.add(this.transformControl);
     this.transformControl.addEventListener('dragging-changed', (event) => {
-      this.controls.enabled = !event["value"];
+      this.orbitControls.enabled = !event["value"];
+      });
+    this.transformControl.addEventListener('mouseUp', (event) => {
+    if (this.transformControl.object)
+     this.sceneService.recordDrag(this.transformControl.object.uuid, this.transformControl.object.position);
       });
     this.transformControl.space = "local";
     this.renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
@@ -140,7 +147,7 @@ export class Viewer {
   }
 
   setControls() {
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
   }
 
   setRaycaster() {

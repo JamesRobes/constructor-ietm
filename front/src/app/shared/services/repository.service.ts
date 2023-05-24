@@ -14,6 +14,7 @@ import { RepositoryI } from '../models/repository.interface';
 export class RepositoryService {
   private apiUrl: string = environment.baseUrl;
   editMode = false;
+  dragMode = false;
   constructor(private http: HttpClient) {}
 
   create(createRepositoryDto: CreateRepositoryDto): Observable<RepositoryI> {

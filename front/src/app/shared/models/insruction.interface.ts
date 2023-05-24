@@ -13,6 +13,7 @@ export enum ActionType {
   Annotation,
   RestoreView,
   FitToView,
+  Drag,
 }
 
 export interface InstructionI {

@@ -15,6 +15,9 @@ import {
 } from 'src/app/shared/models/viewerConstants';
 import { VIEWER_BUTTONS } from '../../scene.component';
 import { SectionPlanes } from '../../services/section.service';
+import { ProjectEditorModule } from 'src/app/project-editor/project-editor.module';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
+import { SceneService } from '../../services/scene.service';
 
 @Component({
   selector: 'app-viewer-toolbar',
@@ -38,17 +41,20 @@ export class ViewerToolbarComponent implements OnInit {
   @Output() createPlane = new EventEmitter();
   @Output() changeConstantSection = new EventEmitter();
   @Output() changeInvertSection = new EventEmitter();
-
+  selectedObj: any = null;
   rotateAnimationSliderMinValue = CAMERA_ROTATE_SPEED;
   rotateAnimationSliderMaxValue = 20;
   rotateAnimationSliderStep = 1;
   explodeSliderMinValue = EXPLODE_POWER;
   explodeSliderMaxValue = 1.5;
   explodeSliderStep = 0.1;
+  
+  constructor(
+    public router: Router,
+    private repo: RepositoryService,
+    private sceneServise: SceneService) {  }
 
-  constructor(public router: Router) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   rotateAnimationBtnIsActive() {
     return this.activeBtnIndex === VIEWER_BUTTONS.RotateAnimation;
@@ -58,27 +64,35 @@ export class ViewerToolbarComponent implements OnInit {
     return this.activeBtnIndex === VIEWER_BUTTONS.Explode;
   }
 
+  dragModeIsActive()
+  {
+    return this.activeBtnIndex === VIEWER_BUTTONS.Drag;
+  }
+
   resetCamera() {
     this.viewerBtnClicked.emit(VIEWER_BUTTONS.Home);
   }
-  
-  fullScreen() {    
+
+  fullScreen() {
     var elem = document.querySelector(".viewer")!;
-    if(this.isFullscreen())
-    {
+    if (this.isFullscreen()) {
       document.exitFullscreen();
       return
     }
 
     console.log(elem);
-    if (elem?.requestFullscreen){
-        elem.requestFullscreen();
-    }    
-    
+    if (elem?.requestFullscreen) {
+      elem.requestFullscreen();
+    }
+
   }
 
   isFullscreen() {
     return !!document.fullscreenElement;
+  }
+
+  dragMode() {    
+    this.viewerBtnClicked.emit(VIEWER_BUTTONS.Drag);
   }
 
   rotateCamera() {

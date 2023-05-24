@@ -57,6 +57,7 @@ export enum VIEWER_BUTTONS {
   Cut,
   HideAnnotations,
   AddAnnotation,
+  Drag,
 }
 
 @Component({
@@ -80,6 +81,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger: MatMenuTrigger;
   @ViewChild('viewerContextMenuInner') viewerContextMenuInnerRef: ElementRef;
   @ViewChild(ViewCubeComponent) cube: ViewCubeComponent;
+  @ViewChild('menuBtn') menuBtn: ElementRef<HTMLButtonElement>;
 
   @HostListener('window:resize', ['$event']) onResize($event: any) {
     this.viewer.resize(
@@ -253,7 +255,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: ActionType.Camera,
                 value: {
                   position: this.viewer.camera.position.clone(),
-                  target: this.viewer.controls.target.clone(),
+                  target: this.viewer.orbitControls.target.clone(),
                 },
               },
             ]);
@@ -579,6 +581,9 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
         this.stopCuttingModel();
         this.resetCamera();
         break;
+      case VIEWER_BUTTONS.Drag:
+        this.stopDrag();
+        break;
       default:
         break;
     }
@@ -586,7 +591,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
 
   resetCamera() {
     this.sceneService.moveCameraToDefaultPosition(() => {
-      this.viewer.controls.enabled = true;
+      this.viewer.orbitControls.enabled = true;
     });
   }
 
@@ -624,6 +629,10 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   resetContextMenu() {
+    if(this.contextMenuIsOpened)
+    {
+      this.menuBtn.nativeElement.click();
+    }
     this.contextMenuIsOpened = false;
     this.contextMenuClickedOutside = true;
     this.contextMenuFirstOpen = true;
@@ -687,6 +696,10 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
   stopCuttingModel() {
     this.btnIsInAction = false;
     this.sceneService.removePlane();
+  }
+
+  stopDrag() {
+    this.btnIsInAction = false;
   }
 
   moveYZ(value: number) {
@@ -769,6 +782,9 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         });
         break;
+        case VIEWER_BUTTONS.Drag:
+          this.repo.dragMode = !this.repo.dragMode;
+          break;
       default:
         break;
     }
@@ -831,11 +847,13 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.contextMenuIsOpened) {
       this.contextMenuIsOpened = false;
       this.matMenuTrigger?.closeMenu();
+      this.menuBtn.nativeElement.click();
     }
     if (this.contextMenuFirstOpen) {
       this.contextMenuIsOpened = true;
       this.contextMenuFirstOpen = false;
       this.matMenuTrigger?.openMenu();
+      this.menuBtn.nativeElement.click();
     }
   }
 

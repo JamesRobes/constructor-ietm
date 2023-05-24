@@ -29,11 +29,12 @@
     (contextmenu)="onRightClick($event)"
     id = "canvas"
   ></canvas>
-  <div
+  <button
+    #menuBtn
     style="visibility: hidden; position: fixed"
     [ngStyle]="{ top: contextMenuPosition.y, left: contextMenuPosition.x }"
     [matMenuTriggerFor]="rightMenu"
-  ></div>
+  ></button>
   <mat-menu class="context-menu" #rightMenu="matMenu" [hasBackdrop]="false">
     <div #viewerContextMenuInner>
       <ng-template matMenuContent>

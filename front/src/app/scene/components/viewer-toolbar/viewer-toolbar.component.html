@@ -161,10 +161,28 @@
     </div>
     <div 
       class="toolbar__btn"
-      matTooltip="Полный экран"
+      matTooltip="Перемещение"
       matTooltipPosition="above"
       matTooltipClass="tooltip">
       <app-viewer-button 
+        [isActive]="dragModeIsActive()"
+        [iconPath]="'assets/png/axis_arrow_icon.png'"
+        [iconActivePath]="'assets/png/axis_arrow_icon_active.png'"
+        [buttonName]="'Перемещение'"
+        (btnClicked)="dragMode()"
+      ></app-viewer-button>
+      <div class="toolbar__panel" [hidden]="!dragModeIsActive()">
+        <mat-checkbox
+          color="primary"
+          >Включить</mat-checkbox>
+      </div>
+    </div>
+    <div 
+      class="toolbar__btn"
+      matTooltip="Полный экран"
+      matTooltipPosition="above"
+      matTooltipClass="tooltip">
+      <app-viewer-button
         [iconPath]="isFullscreen() ? 'assets/svg/exit_fullscreen.svg' : 'assets/svg/full-screen_icon.svg'" 
         [buttonName]="'Полный экран'"
         (btnClicked)="fullScreen()"

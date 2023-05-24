@@ -45,7 +45,6 @@ import { TestsComponent } from './components/editor-tests/tests.component';
     InstructionComponent,
     StepActionComponent,
     TestsComponent,
-
   ],
   imports: [
     CommonModule,
