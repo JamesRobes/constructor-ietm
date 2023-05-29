@@ -358,7 +358,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
           this.treeStructureService.setSelectedTreeNodeObjectId(
             this.sceneService.selectedObj.objectId,
           );
-        //console.log(this.sceneService.selectedObj);
+        console.log(this.sceneService.selectedObj);
         //console.log("color is " + (this.sceneService.selectedObj.material.color as THREE.Color).getHexString());
         //console.log("color is " + this.sceneService.selectedObj.material.color.r)
       } else {

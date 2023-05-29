@@ -27,7 +27,7 @@ import { EditorInstructionsComponent } from './components/editor-instructions/ed
 import { InstructionComponent } from './components/instruction/instruction.component';
 import { StepActionComponent } from './components/step-action/step-action.component';
 import { TestsComponent } from './components/editor-tests/tests.component';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 @NgModule({
@@ -63,6 +63,7 @@ import { TestsComponent } from './components/editor-tests/tests.component';
     LoaderModule,
     DialogChooseImageModule,
     TreeStructureModule,
+    AngularEditorModule,
   ],
 })
 export class ProjectEditorModule {}
