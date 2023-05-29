@@ -17,6 +17,9 @@ export class Model {
 
   @Prop()
   path: string;
+
+  @Prop()
+  gltf: string;
 }
 
 export const ModelSchema = SchemaFactory.createForClass(Model);
