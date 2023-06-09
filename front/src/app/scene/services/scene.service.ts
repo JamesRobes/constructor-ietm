@@ -554,13 +554,13 @@ export class SceneService {
       }
     } else {
       if (this.selectedObj?.uuid === filteredIntersects[0].object.uuid) { //если был выбран ранее выбранный объект
-        this.selectedObj.material = this.selectedObj.defaultMaterial.clone();
+        //this.selectedObj.material = this.selectedObj.defaultMaterial.clone();
         this.viewer.transformControl.detach();
         this.selectedObj = null;
       } else {
-        this.selectedObj.material = this.selectedObj.defaultMaterial.clone(); //если был выбран новый объект
+        //this.selectedObj.material = this.selectedObj.defaultMaterial.clone(); //если был выбран новый объект
         this.selectedObj = filteredIntersects[0].object;
-        this.selectedObj.defaultMaterial = this.selectedObj.material.clone();
+        //this.selectedObj.defaultMaterial = this.selectedObj.material.clone();
         //this.selectedObj.material.opacity = 0.5
         if (this.repo.editMode) {
           this.viewer.transformControl.attach(this.selectedObj);

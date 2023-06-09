@@ -7,6 +7,8 @@ import { TreeComponent } from './components/tree/tree.component';
 import { RepositoryComponent } from './repository.component';
 import { RepositoryIsInFavoriteResolverService } from './resolvers/repository-is-in-favorite-resolver.service';
 import { RepositoryResolverService } from './resolvers/repository-resolver.service';
+import { TestPageComponent } from './components/test-page/test-page.component';
+import { TestResultComponent } from './components/test-result/test-result.component';
 
 const routes: Routes = [
   {
@@ -33,6 +35,14 @@ const routes: Routes = [
       {
         path: 'test',
         component: TestsComponent,
+      },
+      {
+        path: 'test-page',
+        component: TestPageComponent,
+      },
+      {
+        path: 'test-result',
+        component: TestResultComponent
       }
     ],
   },

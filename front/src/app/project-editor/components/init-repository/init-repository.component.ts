@@ -21,6 +21,7 @@ import { DataStoreService } from 'src/app/shared/services/data-store.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import { RepositoryService } from 'src/app/shared/services/repository.service';
 import { SubSink } from 'subsink';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-init-repository',
@@ -39,6 +40,30 @@ export class InitRepositoryComponent implements OnInit, OnDestroy {
   userTeams: TeamI[] = [];
   repositoryToEdit: RepositoryI | null = null;
   editMode = false;
+  config: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: 'auto',
+      minHeight: '150',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Введите описание модели...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+  }
+  
+
   constructor(
     public dataStore: DataStoreService,
     public dialog: MatDialog,
@@ -75,10 +100,9 @@ export class InitRepositoryComponent implements OnInit, OnDestroy {
       type: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.type, [
         Validators.required,
       ]),
-      // description: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.description, [
-      //   Validators.required,
-      //   Validators.maxLength(1000),
-      // ]),
+      description: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.description, [
+        Validators.required,
+      ]),
       preview: new FormControl(!this.editMode ? '' : this.repositoryToEdit?.preview, []),
     });
   }

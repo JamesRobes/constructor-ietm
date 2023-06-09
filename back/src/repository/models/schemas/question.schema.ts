@@ -9,19 +9,19 @@ export class Question {
     type: QuestionType;
 
     @Prop()
-    answer: string;
-
-    @Prop()
     modelID: string;
 
     @Prop()
-    score: number;
-
-    @Prop()
-    header: string;
+    modelNameByUser: string;
 
     @Prop()
     body: string;
+
+    @Prop()
+    correctAnswer: string;
+    
+    @Prop()
+    header: string;
 
 }
 
@@ -30,5 +30,5 @@ export const QuestionSchema = SchemaFactory.createForClass(Question);
 export enum QuestionType {
     FindAPart,
     WhatAPart,
-    InsertNameOfPart
+    OneOfThree
 }

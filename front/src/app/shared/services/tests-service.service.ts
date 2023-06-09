@@ -26,4 +26,10 @@ export class TestsServiceService {
       withCredentials: true
     });
   }
+
+  getTestByName(repoID: string, testName: string) {
+    return this.http.get(`${this.apiUrl}/repository/tests/one/${repoID}/${testName}`, {
+      withCredentials: true,
+    });
+  }
 }

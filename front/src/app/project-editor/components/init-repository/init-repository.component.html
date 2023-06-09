@@ -38,7 +38,7 @@
       <label class="form__label" for="description">Описание</label>
       <!-- <textarea class="form__textarea" placeholder="Описание репозитория" id="description"
         formControlName="description"></textarea> -->
-        <angular-editor></angular-editor>
+        <angular-editor formControlName="description" [config]="config"></angular-editor>
     </div>
     <div class="form__field">
       <div class="init-repository__type">

@@ -1,0 +1,47 @@
+<div *ngIf="test" class="basic">
+  Тест: {{test.name}}
+  <div *ngIf="test.questions?.length">
+    <mat-tab-group>
+      <mat-tab [label]="(i + 1).toString()" *ngFor="let question of test.questions; let i = index">
+        <form [formGroup]="firstFormGroup">
+          <ng-container [ngSwitch]="question.type">
+            <ng-container *ngSwitchCase="questionType.FindAPart">
+              <div>Вопрос:
+                {{question.header}}</div>
+
+              <mat-form-field appearance="outline">
+                <mat-label></mat-label>
+                <input matInput [formControlName]="question.header">
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="questionType.WhatAPart">
+              <div>Вопрос:
+                {{question.header}}</div>
+
+              <mat-form-field appearance="outline">
+                <mat-label></mat-label>
+                <input matInput [formControlName]="question.header">
+              </mat-form-field>
+              <button (click)="submit">Подтвердить выбор</button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="questionType.OneOfThree">
+              <div>Вопрос:
+                {{question.header}}</div>
+
+              <mat-form-field appearance="outline">
+                <mat-label></mat-label>
+                <input matInput [formControlName]="question.header">
+              </mat-form-field>
+            </ng-container>
+
+          </ng-container>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+    <div>
+      <button routerLink="../test-result" mat-button (click)="endTest()">Завершить тест</button>
+    </div>
+  </div>
+</div>

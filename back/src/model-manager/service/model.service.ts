@@ -141,7 +141,7 @@ export class ModelService {
       fse.writeJson(path, data)
         .then(() => true)
         .catch(() => false),
-    )
+    ) as Observable<boolean>;
   }
 
   writeRepoDirectoryById(repoId: string): Observable<boolean> {

@@ -23,7 +23,7 @@
                   <th class="steps__column steps__column-time">Шаг</th>
                   <th class="steps__column steps__column-action">Предпросмотр</th>
                   <th class="steps__column steps__column-action">Описание</th>
-                  <th class="steps__column steps__column-action">Действия</th>
+                  <!-- <th class="steps__column steps__column-action">Действия</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -35,10 +35,12 @@
                     <img *ngIf="step.img" class="preview" height="200px" [src]="step.img"
                     (click)="sceneService.playAction(step.actions)"/>
                   </td>
-                  <td class="steps__column steps__column-time">
-                    {{ step.description }}
+                  <td>
+                  <div class="steps__column steps__column-time" [innerHTML]="step.description | safeHTML">
+                  </div>
+                    <!-- {{ step.description }} -->
                   </td>
-                  <td class="steps__column steps__column-action">
+                  <!-- <td class="steps__column steps__column-action">
                     <button
                       mat-icon-button
                       matTooltip="Вопроизвести шаг"
@@ -48,7 +50,7 @@
                     >
                       <img class="steps__btn-icon" src="assets/svg/play.svg" alt="вопроизвести" />
                     </button>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
             </table>

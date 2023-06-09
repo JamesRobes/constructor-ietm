@@ -504,7 +504,7 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
         .setValue(this.sceneService.selectedObj.material.opacity)
         .onChange((opacity) => {
           this.sceneService.selectedObj.material.opacity = opacity;
-          this.sceneService.selectedObj.defaultMaterial.opacity = opacity;
+          //this.sceneService.selectedObj.defaultMaterial.opacity = opacity;
         });
     }
   }

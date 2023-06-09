@@ -611,6 +611,13 @@ export class RepositoryService {
     }));      
   }
 
+  getTestByName(repoId: string, testName: string): Observable<any> {
+    return this.getOneById(repoId)
+    .pipe(map(repo => {
+      return repo.tests.find(test => test.name === testName);
+    }));      
+  }
+
   createTest(createTestDto: CreateTestDto): Observable<any> {
     return this.getOneById(createTestDto.repoId)
     .pipe(

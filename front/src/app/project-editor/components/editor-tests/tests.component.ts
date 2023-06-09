@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TestsServiceService } from '../../../shared/services/tests-service.service';
+import { SceneService } from 'src/app/scene/services/scene.service';
 
 enum QuestionType {
   FindAPart,
-  InsertNameOfPart
+  WhatAPart,
+  OneOfThree
 }
 @Component({
   selector: 'app-tests',
@@ -21,8 +23,11 @@ export class TestsComponent implements OnInit {
   public questionNum: number = 1;
   public questions: any[] = [];
   public formGroup: FormGroup;
-  constructor(private testService: TestsServiceService) { }
-
+  constructor(
+    private testService: TestsServiceService,
+    public sceneService: SceneService
+    ) { }
+  
   ngOnInit(): void {
 
     if (this.repoID) {
@@ -33,7 +38,12 @@ export class TestsComponent implements OnInit {
     this.formGroup = new FormGroup({
       header: new FormControl(''),
       type: new FormControl(QuestionType.FindAPart),
-      answer: new FormControl('')
+      selectedModel: new FormControl(''),
+      answer: new FormControl(''),
+      firstAnswer: new FormControl(''),
+      secondAnswer: new FormControl(''),
+      thirdAnswer: new FormControl(''),
+      correctAnswer: new FormControl('')
     })
   }
 
@@ -46,7 +56,7 @@ export class TestsComponent implements OnInit {
       alert("Заполните заголовок вопроса и ответ на вопрос.");
       return
     }
-
+    
     this.questions.push(this.formGroup.value);
     this.formGroup.reset({
       header: '',
@@ -55,6 +65,11 @@ export class TestsComponent implements OnInit {
     });
   }
 
+  confirmModel() {
+    if (this.sceneService.selectedObj)
+    this.formGroup.controls.answer.setValue(this.sceneService.selectedObj.userData.uuid);
+  }
+  
   finishTest() {
     if (this.testName === "") {
       alert("Введите название теста!")
@@ -81,6 +96,10 @@ export class TestsComponent implements OnInit {
 
   cancel() {
     this.editMode = false;
+  }
+
+  findAPart() {
+
   }
 
   public get questionType() {

@@ -102,8 +102,8 @@
           />
           <span class="repository__author-text">{{ repository.team.title }}</span>
         </div>
-        <div class="repository__description">
-          {{ repository.description }}
+        <div class="repository__description" [innerHTML]="repository.description">
+
         </div>
       </div>
     </a>

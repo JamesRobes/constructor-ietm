@@ -15,9 +15,21 @@ import { DialogConfirmActionModule } from '../dialogs/dialog-confirm-action/dial
 import { InstructionsComponent } from './components/instructions/instructions.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TestsComponent } from './components/tests/tests/tests.component';
-
+import { TestPageComponent } from './components/test-page/test-page.component';
+import { TestResultComponent } from './components/test-result/test-result.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PipeModule } from '../shared/pipes/pipe.module';
+import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
-  declarations: [RepositoryComponent, SummaryComponent, TreeComponent, InstructionsComponent, TestsComponent],
+  declarations: [RepositoryComponent, 
+    SummaryComponent, 
+    TreeComponent, 
+    InstructionsComponent, 
+    TestsComponent, 
+    TestPageComponent, 
+    TestResultComponent],
   imports: [
     CommonModule,
     RepositoryRoutingModule,
@@ -29,6 +41,11 @@ import { TestsComponent } from './components/tests/tests/tests.component';
     HasRoleModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    PipeModule,
+    MatTabsModule
   ],
 })
 export class RepositoryModule {}

@@ -15,7 +15,7 @@
             <div class="test-name">
                 Вопрос №{{questions.length+1}}
             </div>
-            <form [formGroup]="formGroup" class="questionDiv">
+            <form [formGroup]="formGroup" class="questionDiv" class="test-name">
                 <div>
                     <label>
                         Заголовок вопроса:
@@ -27,10 +27,13 @@
                         Тип вопроса:
                         <select formControlName="type" placeholder="Тип вопроса">
                             <option class="type" [value]="questionType.FindAPart">
-                                Найдите деталь
+                                Выберите деталь с соответствующим названием
                             </option>
-                            <option class="type" [value]="questionType.InsertNameOfPart">
-                                Введите название детали
+                            <option class="type" [value]="questionType.WhatAPart">
+                                Введите название представленной детали
+                            </option>
+                            <option class="type" [value]="questionType.OneOfThree">
+                                Выберите одно верное
                             </option>
                         </select>
                     </label>
@@ -40,19 +43,29 @@
                         Ответ:
                         <input class="text" *ngSwitchCase="questionType.FindAPart" formControlName="answer"
                             placeholder="Укажите деталь, которую нужно найти">
-                        <input class="text" *ngSwitchCase="questionType.InsertNameOfPart" formControlName="answer"
+                        <input class="text" *ngSwitchCase="questionType.WhatAPart" formControlName="answer"
                             placeholder="Укажите название выбранной детали">
+                        <div *ngSwitchCase="questionType.OneOfThree">
+                            <label>Напишите три варианта ответа и выберите один как правильный</label><br>
+                            <input type="radio" formControlName="firstAnswer" id="1" name="answer">
+                            <input for="1" placeholder="Введите один из вариантов ответа"><br>
+                            <input type="radio" formControlName="secondAnswer" id="2" name="answer">
+                            <input for="2" placeholder="Введите один из вариантов ответа"><br>
+                            <input type="radio" formControlName="thirdAnswer" id="3" name="answer">
+                            <input for="3" placeholder="Введите один из вариантов ответа"><br>
+                        </div>
                     </label>
                 </div>
             </form>
         </div>
-
     </div>
 
     <button class="buts" mat-raised-button color="primary" type="button" (click)="addQuestion()" *ngIf="editMode">
         Добавить вопрос
     </button>
-
+    <button [disabled]="!sceneService.selectedObj" class="buts" mat-raised-button color="primary" type="button" (click)="confirmModel()" *ngIf="editMode">
+        Подтвердить выбор
+    </button>
     <button class="buts" mat-raised-button color="primary" type="button" (click)="finishTest()" *ngIf="editMode">
         Завершить создание теста
     </button>

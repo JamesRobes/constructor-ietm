@@ -3,8 +3,8 @@
         <div class="test">
             {{test.name}}
             <div>
-                {{test.questions[0].header}}
-                {{test.questions[0].answer}}
+                <!-- {{test.questions[0].header}}
+                {{test.questions[0].answer}} -->
 
                 <!-- {{test.questions[1].header}}
                 {{test.questions[1].answer}}
@@ -18,7 +18,7 @@
         </div>
 
         <div mat-raised-button color="primary" type="button">
-            <button>Пройти тест</button>
+            <a routerLink="../test-page" [queryParams]="{ testName: test.name }">Пройти тест</a>
         </div>
     </div>
 </div>

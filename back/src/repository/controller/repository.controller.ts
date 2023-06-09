@@ -210,6 +210,14 @@ export class RepositoryController {
     return this.repositoryService.getAllTestsByRepoID(id);
   }
 
+  @Get('tests/one/:id/:name')
+  getTestByName(
+    @Param('id') id: string,
+    @Param('name') testName: string,
+  ): Observable<TestDocument> {
+    return this.repositoryService.getTestByName(id, testName);
+  }
+
   @Post('tests/create')
   createTest(
     @Body() createTestDto: CreateTestDto
