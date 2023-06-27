@@ -540,28 +540,22 @@ export class SceneService {
   }
 
   selectObject(filteredIntersects: THREE.Intersection[]) {
-    if (!this.selectedObj) { //проверка существующего выделения
-      this.selectedObj = filteredIntersects[0].object; //выбор первого объекта массива пересечений
+    if (!this.selectedObj) {
+      this.selectedObj = filteredIntersects[0].object;
       if (this.selectedObj) {
-        //this.selectedObj.defaultMaterial = CLICKED_OBJ_MATERIAL; //изменение материала
-        //this.selectedObj.material.opacity = 0.5 //изменение прозрачности материала
         if (this.repo.editMode) {
-          this.viewer.transformControl.attach(this.selectedObj); //добавление элементов перемещения детали
+          this.viewer.transformControl.attach(this.selectedObj);
         }
         if (this.repo.dragMode) {
-          this.viewer.transformControl.attach(this.selectedObj); //добавление элементов перемещения детали
+          this.viewer.transformControl.attach(this.selectedObj); 
         }
       }
     } else {
-      if (this.selectedObj?.uuid === filteredIntersects[0].object.uuid) { //если был выбран ранее выбранный объект
-        //this.selectedObj.material = this.selectedObj.defaultMaterial.clone();
+      if (this.selectedObj?.uuid === filteredIntersects[0].object.uuid) {
         this.viewer.transformControl.detach();
         this.selectedObj = null;
       } else {
-        //this.selectedObj.material = this.selectedObj.defaultMaterial.clone(); //если был выбран новый объект
         this.selectedObj = filteredIntersects[0].object;
-        //this.selectedObj.defaultMaterial = this.selectedObj.material.clone();
-        //this.selectedObj.material.opacity = 0.5
         if (this.repo.editMode) {
           this.viewer.transformControl.attach(this.selectedObj);
         }

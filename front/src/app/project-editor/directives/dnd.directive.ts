@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   selector: '[appDnd]',
 })
 export class DndDirective {
+  private allowedExtensions = [".stp", ".step", ".igs", ".iges", ".gltf"]; 
   @Output() fileDropped = new EventEmitter<any>();
 
   @HostListener('drop', ['$event']) public ondrop(e: any) {
@@ -14,8 +15,8 @@ export class DndDirective {
     const file = e.dataTransfer.files[0];
 
     if (file) {
-      const fileExtension = file.name.slice(file.name.lastIndexOf('.'));
-      if (fileExtension === '.stp' || fileExtension === '.gltf') this.fileDropped.emit(file);
+      const fileExtension: string = file.name.slice(file.name.lastIndexOf('.'));
+      if (this.allowedExtensions.includes(fileExtension.toLowerCase())) this.fileDropped.emit(file);
       else
         this.snackBar.open('Неподдерживаемый формат файла, доступны: .stp и .gltf файлы', '', {
           duration: 5000,

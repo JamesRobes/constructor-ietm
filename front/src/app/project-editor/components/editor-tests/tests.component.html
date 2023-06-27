@@ -45,14 +45,20 @@
                             placeholder="Укажите деталь, которую нужно найти">
                         <input class="text" *ngSwitchCase="questionType.WhatAPart" formControlName="answer"
                             placeholder="Укажите название выбранной детали">
-                        <div *ngSwitchCase="questionType.OneOfThree">
+                        <div *ngSwitchCase="questionType.OneOfThree" class="oneOfThree">
                             <label>Напишите три варианта ответа и выберите один как правильный</label><br>
-                            <input type="radio" formControlName="firstAnswer" id="1" name="answer">
-                            <input for="1" placeholder="Введите один из вариантов ответа"><br>
-                            <input type="radio" formControlName="secondAnswer" id="2" name="answer">
-                            <input for="2" placeholder="Введите один из вариантов ответа"><br>
-                            <input type="radio" formControlName="thirdAnswer" id="3" name="answer">
-                            <input for="3" placeholder="Введите один из вариантов ответа"><br>
+                            <div>
+                                <input type="radio" formControlName="firstAnswer" id="1" name="answer">
+                                <input class="oneOfThree" for="1" placeholder="Введите один из вариантов ответа">
+                            </div>
+                            <div>
+                                <input type="radio" formControlName="secondAnswer" id="2" name="answer">
+                                <input class="oneOfThree" type="text" for="2" placeholder="Введите один из вариантов ответа">
+                            </div>
+                            <div>
+                                <input type="radio" formControlName="thirdAnswer" id="3" name="answer">
+                                <input class="oneOfThree" for="3" placeholder="Введите один из вариантов ответа">
+                            </div>
                         </div>
                     </label>
                 </div>

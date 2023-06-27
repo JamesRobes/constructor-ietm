@@ -344,6 +344,7 @@ export class RepositoryService {
                 )
                 .pipe(
                   switchMap(() => {
+                    console.log(file, repo, registerModelDto);
                     return this.saveModel(
                       file,
                       repo,
@@ -362,6 +363,7 @@ export class RepositoryService {
                     )
                     .pipe(
                       switchMap(() => {
+                        console.log(file, repo, registerModelDto);
                         return this.saveModel(
                           file,
                           repo,

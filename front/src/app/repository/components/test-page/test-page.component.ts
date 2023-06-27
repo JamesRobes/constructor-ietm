@@ -33,7 +33,7 @@ export class TestPageComponent implements OnInit {
     private route: ActivatedRoute, 
     public sceneService: SceneService,
     private _formBuilder: FormBuilder) { }
-
+    private modelUuid: string
   ngOnInit(): void {
     const repoID = this.route.snapshot.parent?.data.repository._id;
     const testName = this.route.snapshot.queryParams.testName;
@@ -65,6 +65,8 @@ export class TestPageComponent implements OnInit {
     if (this.currentQuestion > 0)
     this.currentQuestion--;
   }
+
+
 
   submit() {
     

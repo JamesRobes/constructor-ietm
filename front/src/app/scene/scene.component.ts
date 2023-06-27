@@ -359,10 +359,8 @@ export class SceneComponent implements OnInit, AfterViewInit, OnDestroy {
             this.sceneService.selectedObj.objectId,
           );
         console.log(this.sceneService.selectedObj);
-        //console.log("color is " + (this.sceneService.selectedObj.material.color as THREE.Color).getHexString());
-        //console.log("color is " + this.sceneService.selectedObj.material.color.r)
       } else {
-        //this.sceneService.selectObject(null);
+
       }
       if (this.repo.editMode) {
       this.destroyGui();
